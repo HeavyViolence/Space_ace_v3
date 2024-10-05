@@ -1,0 +1,36 @@
+using System;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace SpaceAce.Main.Saving
+{
+    public sealed class AESKeyGenerator : IKeyGenerator
+    {
+        private static readonly UTF8Encoding _utf8 = new(true, true);
+        private static readonly SHA256 _sha256 = SHA256.Create();
+        private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
+
+        public int KeySize => 32;
+        public int IVSize => 16;
+
+        public byte[] GenerateKey(string savedDataName)
+        {
+            if (string.IsNullOrEmpty(savedDataName) == true ||
+                string.IsNullOrWhiteSpace(savedDataName) == true)
+                throw new ArgumentNullException();
+
+            byte[] data = _utf8.GetBytes(savedDataName);
+            byte[] hash = _sha256.ComputeHash(data);
+
+            return hash;
+        }
+
+        public byte[] GenerateIV()
+        {
+            byte[] iv = new byte[IVSize];
+            _rng.GetBytes(iv);
+
+            return iv;
+        }
+    }
+}
