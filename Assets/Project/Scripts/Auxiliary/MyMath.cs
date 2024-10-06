@@ -13,7 +13,7 @@ namespace SpaceAce.Auxiliary
 
         public static float RandomNormal => UnityEngine.Random.Range(-1f, 1f);
         public static float RandomUnit => UnityEngine.Random.Range(0f, 1f);
-        public static bool RandomBool => RandomUnit > 0f;
+        public static bool RandomBool => RandomNormal > 0f;
 
         public static IEnumerable<int> GetValuesInRandomOrder(int minInclusive, int maxExclusive, IEnumerable<int> exclusions = null)
         {
@@ -34,7 +34,6 @@ namespace SpaceAce.Auxiliary
                 throw new ArgumentNullException();
 
             int amount = collection.Count();
-
             return collection.OrderBy(x => UnityEngine.Random.Range(0, amount));
         }
 
@@ -43,16 +42,16 @@ namespace SpaceAce.Auxiliary
         #region range and interpolation operations
 
         public static bool ValueInRange(float value, float min, float max, float delta = 0f) =>
-            value - delta >= min && value + delta <= max;
+            value >= min - delta && value <= max + delta;
 
         public static bool ValueInRange(float value, UnityEngine.Vector2 range, float delta = 0f) =>
-            value - delta >= range.x && value + delta <= range.y;
+            value >= range.x - delta && value <= range.y + delta;
 
         public static bool ValueInRange(int value, int min, int max, int delta = 0) =>
-            value - delta >= min && value + delta <= max;
+            value >= min - delta && value <= max + delta;
 
         public static bool ValueInRange(int value, Vector2Int range, int delta = 0) =>
-            value - delta >= range.x && value + delta <= range.y;
+            value >= range.x - delta && value <= range.y + delta;
 
         public static Dictionary<UnityEngine.Vector2, T> InterpolateValuesByRange<T>(AnimationCurve interpolation, IEnumerable<T> values)
         {

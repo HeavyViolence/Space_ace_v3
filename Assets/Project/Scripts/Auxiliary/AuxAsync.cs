@@ -9,6 +9,8 @@ namespace SpaceAce.Auxiliary
 {
     public static class AuxAsync
     {
+        #region conditional delays
+
         public static async UniTask DelayAsync(Func<float> delayProvider,
                                                Func<bool> pauseCondition,
                                                CancellationToken token = default)
@@ -47,6 +49,15 @@ namespace SpaceAce.Auxiliary
             action();
         }
 
+        public static async UniTask DelayThenDoAsync(Action action,
+                                                     Func<bool> delayCondition,
+                                                     Func<bool> pauseCondition,
+                                                     CancellationToken token = default)
+        {
+            await DelayAsync(delayCondition, pauseCondition, token);
+            action();
+        }
+
         public static async UniTask DoThenDelayAsync(Action action,
                                                      Func<float> delayProvider,
                                                      Func<bool> pauseCondition,
@@ -54,6 +65,15 @@ namespace SpaceAce.Auxiliary
         {
             action();
             await DelayAsync(delayProvider, pauseCondition, token);
+        }
+
+        public static async UniTask DoThenDelayAsync(Action action,
+                                                     Func<bool> delayCondition,
+                                                     Func<bool> pauseCondition,
+                                                     CancellationToken token = default)
+        {
+            action();
+            await DelayAsync(delayCondition, pauseCondition, token);
         }
 
         public static async UniTask DoForeverAsync(Action action,
@@ -67,5 +87,19 @@ namespace SpaceAce.Auxiliary
             while (token.IsCancellationRequested == false)
                 await DoThenDelayAsync(action, regularDelayProvider, pauseCondition, token);
         }
+
+        public static async UniTask DoForeverAsync(Action action,
+                                                   Func<bool> firstDelayCondition,
+                                                   Func<bool> regularDelayCondition,
+                                                   Func<bool> pauseCondition,
+                                                   CancellationToken token = default)
+        {
+            await DelayAsync(firstDelayCondition, pauseCondition, token);
+
+            while (token.IsCancellationRequested == false)
+                await DoThenDelayAsync(action, regularDelayCondition, pauseCondition, token);
+        }
+
+        #endregion
     }
 }

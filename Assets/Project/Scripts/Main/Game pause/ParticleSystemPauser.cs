@@ -12,6 +12,8 @@ namespace SpaceAce.Main.GamePause
         private GamePauser _gamePauser;
         private IEnumerable<ParticleSystem> _particleSystems;
 
+        public Guid ID { get; private set; }
+
         [Inject]
         private void Construct(GamePauser gamePauser)
         {
@@ -20,6 +22,7 @@ namespace SpaceAce.Main.GamePause
 
         private void Awake()
         {
+            ID = Guid.NewGuid();
             _particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
         }
 
@@ -32,6 +35,8 @@ namespace SpaceAce.Main.GamePause
         {
             _gamePauser.Deregister(this);
         }
+
+        #region interfaces
 
         public void Pause()
         {
@@ -46,5 +51,16 @@ namespace SpaceAce.Main.GamePause
                 foreach (ParticleSystem system in _particleSystems)
                     system.Play();
         }
+
+        public override bool Equals(object obj) =>
+            obj is not null && Equals(obj as IPausable) == true;
+
+        public bool Equals(IPausable other) =>
+            other is not null && ID == other.ID;
+
+        public override int GetHashCode() =>
+            ID.GetHashCode();
+
+        #endregion
     }
 }

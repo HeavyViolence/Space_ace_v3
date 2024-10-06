@@ -1,4 +1,5 @@
 using SpaceAce.Auxiliary.Exceptions;
+using SpaceAce.Auxiliary.Observables;
 
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,18 @@ namespace SpaceAce.Auxiliary.SafeValues
     public sealed class SafeInt : IDisposable,
                                   IEquatable<SafeInt>,
                                   IComparable<SafeInt>,
-                                  IComparer<SafeInt>
+                                  IComparer<SafeInt>,
+                                  IObservable<int>
     {
         private const int BytesPerInt = 4;
 
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-        private byte[] _value = new byte[BytesPerInt];
+        private byte[] _value;
         private readonly byte[] _iv = new byte[BytesPerInt];
         private bool _disposed = false;
+
+        private readonly ValueTracker<int> _valueTracker = new();
 
         public SafeInt(int value = 0)
         {
@@ -53,6 +57,8 @@ namespace SpaceAce.Auxiliary.SafeValues
 
             _rng.GetBytes(_iv);
             MyMath.XORInternal(_value, _iv);
+
+            _valueTracker.Track(value);
         }
 
         public void Add(int value)
@@ -117,8 +123,8 @@ namespace SpaceAce.Auxiliary.SafeValues
             if (_disposed == true)
                 throw new DisposedException();
 
-            MyMath.Reset(_value);
-            MyMath.Reset(_iv);
+            MyMath.ResetMany(_value, _iv);
+            _valueTracker.Cancel();
 
             _disposed = true;
         }
@@ -153,6 +159,9 @@ namespace SpaceAce.Auxiliary.SafeValues
 
             return 0;
         }
+
+        public IDisposable Subscribe(IObserver<int> observer) =>
+            _valueTracker.Subscribe(observer);
 
         #endregion
     }
