@@ -31,7 +31,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             MyMath.XORInternal(_value, _iv);
         }
 
-        public int GetValue()
+        public int Get()
         {
             if (_disposed == true)
                 throw new DisposedException();
@@ -48,7 +48,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             }
         }
 
-        public void SetValue(int value)
+        public void Set(int value)
         {
             if (_disposed == true)
                 throw new DisposedException();
@@ -71,7 +71,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             int oldValue = BitConverter.ToInt32(_value);
             int newValue = oldValue + value;
 
-            SetValue(newValue);
+            Set(newValue);
         }
 
         public void Subtract(int value)
@@ -84,7 +84,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             int oldValue = BitConverter.ToInt32(_value);
             int newValue = oldValue - value;
 
-            SetValue(newValue);
+            Set(newValue);
         }
 
         public void Multiply(int value)
@@ -97,7 +97,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             int oldValue = BitConverter.ToInt32(_value);
             int newValue = oldValue * value;
 
-            SetValue(newValue);
+            Set(newValue);
         }
 
         public void Divide(int value)
@@ -113,7 +113,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             int oldValue = BitConverter.ToInt32(_value);
             int newValue = oldValue / value;
 
-            SetValue(newValue);
+            Set(newValue);
         }
 
         #region interfaces
@@ -133,7 +133,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             obj is not null && Equals(obj as SafeInt) == true;
 
         public bool Equals(SafeInt other) =>
-            GetValue() == other.GetValue();
+            Get() == other.Get();
 
         public override int GetHashCode() =>
             _value.GetHashCode() ^ _iv.GetHashCode();
@@ -143,10 +143,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             if (other is null)
                 throw new ArgumentNullException();
 
-            if (GetValue() < other.GetValue()) return -1;
-            if (GetValue() > other.GetValue()) return 1;
-
-            return 0;
+            return Get().CompareTo(other.Get());
         }
 
         public int Compare(SafeInt x, SafeInt y)
@@ -154,10 +151,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             if (x is null || y is null)
                 throw new ArgumentNullException();
 
-            if (x.GetValue() < y.GetValue()) return -1;
-            if (x.GetValue() > y.GetValue()) return 1;
-
-            return 0;
+            return x.Get().CompareTo(y.Get());
         }
 
         public IDisposable Subscribe(IObserver<int> observer) =>

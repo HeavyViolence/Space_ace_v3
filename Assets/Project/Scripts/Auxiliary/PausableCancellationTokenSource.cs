@@ -15,7 +15,9 @@ namespace SpaceAce.Auxiliary
         private async UniTask CancelAsync(float delay, Func<bool> pauseCondition)
         {
             await AuxAsync.DelayAsync(() => delay, pauseCondition, Token);
-            if (Token.IsCancellationRequested == false) Cancel();
+
+            if (Token.IsCancellationRequested == false)
+                Cancel();
         }
     }
 }

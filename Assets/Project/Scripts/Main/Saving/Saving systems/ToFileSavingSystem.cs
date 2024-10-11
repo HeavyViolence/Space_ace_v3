@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-
 using SpaceAce.Auxiliary;
 
 using System.Collections.Generic;
@@ -19,7 +17,7 @@ namespace SpaceAce.Main.Saving
         protected override string GetSavedDataPath(string savedDataName) =>
             Path.Combine(Application.persistentDataPath, savedDataName + SaveFileExtension);
 
-        protected async override UniTask SaveAsync(ISavable entity)
+        protected override void Save(ISavable entity)
         {
             string state = entity.GetSatate();
 
@@ -34,19 +32,18 @@ namespace SpaceAce.Main.Saving
             savableData.AddRange(iv);
 
             string path = GetSavedDataPath(entity.SavedDataName);
-            await File.WriteAllBytesAsync(path, savableData.ToArray());
+            File.WriteAllBytes(path, savableData.ToArray());
 
             MyMath.ResetMany(data, key, iv);
-            OnStateSaved(entity.SavedDataName);
         }
 
-        protected async override UniTask<bool> TryLoadAsync(ISavable entity)
+        protected override bool TryLoad(ISavable entity)
         {
             string path = GetSavedDataPath(entity.SavedDataName);
 
             if (File.Exists(path) == true)
             {
-                byte[] loadedData = await File.ReadAllBytesAsync(path);
+                byte[] loadedData = File.ReadAllBytes(path);
 
                 byte[] encryptedData = loadedData[..^KeyGenerator.IVSize];
                 byte[] key = KeyGenerator.GenerateKey(entity.SavedDataName);
@@ -57,8 +54,6 @@ namespace SpaceAce.Main.Saving
                 entity.SetState(state);
 
                 MyMath.ResetMany(decryptedData, key, iv);
-                OnStateLoaded(entity.SavedDataName);
-
                 return true;
             }
 

@@ -10,9 +10,10 @@ namespace SpaceAce.Auxiliary.Observables
 
         public ValueObserverDisposer(IEnumerable<IObserver<T>> observers, IObserver<T> observer)
         {
-            _observers = observers is null ? throw new ArgumentNullException()
-                                           : new(observers);
+            if (observers is null)
+                throw new ArgumentNullException();
 
+            _observers = new(observers);
             _observer = observer ?? throw new ArgumentNullException();
         }
 

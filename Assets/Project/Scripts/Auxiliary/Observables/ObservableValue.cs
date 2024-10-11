@@ -2,7 +2,7 @@ using System;
 
 namespace SpaceAce.Auxiliary.Observables
 {
-    public sealed class ObservableValue<T> : IObservable<T>, IDisposable
+    public sealed class ObservableValue<T> : IDisposable, IObservable<T> where T : struct
     {
         private readonly ValueTracker<T> _valueTracker = new();
 
@@ -19,13 +19,13 @@ namespace SpaceAce.Auxiliary.Observables
             }
         }
 
-        public IDisposable Subscribe(IObserver<T> observer) =>
-            _valueTracker.Subscribe(observer);
-
         public void Dispose()
         {
             _value = default;
             _valueTracker.Cancel();
         }
+
+        public IDisposable Subscribe(IObserver<T> observer) =>
+            _valueTracker.Subscribe(observer);
     }
 }

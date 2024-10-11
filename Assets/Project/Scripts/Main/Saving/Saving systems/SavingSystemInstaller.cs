@@ -10,14 +10,11 @@ namespace SpaceAce.Main.Saving
         private SavingSystemType _savingSystemType;
 
         [SerializeField]
-        private KeyGenerationType _keyGenerationType;
-
-        [SerializeField]
         private EncryptionType _encryptionType;
 
         public override void InstallBindings()
         {
-            IKeyGenerator keyGenerator = SelectKeyGenerator(_keyGenerationType);
+            IKeyGenerator keyGenerator = SelectKeyGenerator(_encryptionType);
             IKeyValidator keyValidator = SelectKeyValidator(_encryptionType);
             Encryptor encryptor = SelectEncryptor(_encryptionType, keyValidator);
             SavingSystem savingSystem = SelectSavingSystem(_savingSystemType, keyGenerator, encryptor);
@@ -28,13 +25,14 @@ namespace SpaceAce.Main.Saving
                      .NonLazy();
         }
 
-        private IKeyGenerator SelectKeyGenerator(KeyGenerationType type)
+        private IKeyGenerator SelectKeyGenerator(EncryptionType type)
         {
             return type switch
             {
-                KeyGenerationType.Blank => new BlankKeyGenerator(),
-                KeyGenerationType.Hash => new HashKeyGenerator(),
-                KeyGenerationType.AES => new AESKeyGenerator(),
+                EncryptionType.None => new BlankKeyGenerator(),
+                EncryptionType.XOR => new HashKeyGenerator(),
+                EncryptionType.PrimeTransform => new HashKeyGenerator(),
+                EncryptionType.AES => new AESKeyGenerator(),
                 _ => new BlankKeyGenerator()
             };
         }

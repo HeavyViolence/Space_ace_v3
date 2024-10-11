@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +7,7 @@ namespace SpaceAce.Main.Saving
     public abstract class SavingSystem
     {
         public event EventHandler<StateSavedEventArgs> StateSaved;
-        public event EventHandler<StateLoadedEventArgs> StateLoaded;
+        public event EventHandler<StateLoadedEventArgs> StateLoaded, SetDefaultState;
 
         public event EventHandler<SavingFailedEventArgs> SavingFailed;
         public event EventHandler<LoadingFailedEventArgs> LoadingFailed;
@@ -27,7 +25,7 @@ namespace SpaceAce.Main.Saving
             Encryptor = encryptor ?? throw new ArgumentNullException();
         }
 
-        public async UniTask<bool> RegisterAsync(ISavable entity)
+        public void Register(ISavable entity)
         {
             if (entity is null)
                 throw new ArgumentNullException();
@@ -36,25 +34,28 @@ namespace SpaceAce.Main.Saving
             {
                 try
                 {
-                    entity.SavingRequested += async (_, _) => await SaveAsync(entity);
-                    return await TryLoadAsync(entity);
+                    entity.SavingRequested += (_, _) => Save(entity);
+                    
+                    if (TryLoad(entity) == true)
+                    {
+                        StateLoaded?.Invoke(this, new(entity.SavedDataName));
+                    }
+                    else
+                    {
+                        SetDefaultState?.Invoke(this, new(entity.SavedDataName));
+                    }
                 }
                 catch (Exception ex)
                 {
-                    _registeredEntities.Remove(entity);
-                    entity.SavingRequested -= async (_, _) => await SaveAsync(entity);
-
                     entity.SetDefaultState();
-                    OnLoadingFailed(entity.SavedDataName, ex);
 
-                    return false;
+                    SetDefaultState?.Invoke(this, new(entity.SavedDataName));
+                    LoadingFailed?.Invoke(this, new(entity.SavedDataName, ex));
                 }
             }
-
-            return false;
         }
 
-        public async UniTask<bool> DeregisterAsync(ISavable entity)
+        public void Deregister(ISavable entity)
         {
             if (entity is null)
                 throw new ArgumentNullException();
@@ -63,51 +64,21 @@ namespace SpaceAce.Main.Saving
             {
                 try
                 {
-                    entity.SavingRequested -= async (_, _) => await SaveAsync(entity);
-                    await SaveAsync(entity);
+                    entity.SavingRequested -= (_, _) => Save(entity);
 
-                    return true;
+                    Save(entity);
+                    StateSaved?.Invoke(this, new(entity.SavedDataName));
                 }
                 catch (Exception ex)
                 {
-                    _registeredEntities.Add(entity);
-                    entity.SavingRequested += async (_, _) => await SaveAsync(entity);
-
-                    OnSavingFailed(entity.SavedDataName, ex);
-
-                    return false;
+                    SavingFailed?.Invoke(this, new(entity.SavedDataName, ex));
                 }
             }
-
-            return false;
         }
-
-        public async UniTask<bool> DeregisterAllAsync()
-        {
-            if (_registeredEntities.Count == 0)
-                return false;
-
-            foreach (ISavable savable in _registeredEntities)
-                await DeregisterAsync(savable);
-
-            return true;
-        }
-
-        protected void OnStateSaved(string savedDataName) =>
-            StateSaved?.Invoke(this, new(savedDataName));
-
-        protected void OnStateLoaded(string savedDataName) =>
-            StateLoaded?.Invoke(this, new(savedDataName));
-
-        protected void OnSavingFailed(string savedDataName, Exception ex) =>
-            SavingFailed?.Invoke(this, new(savedDataName, ex));
-
-        protected void OnLoadingFailed(string savedDataName, Exception ex) =>
-            LoadingFailed?.Invoke(this, new(savedDataName, ex));
 
         protected abstract string GetSavedDataPath(string savedDataName);
 
-        protected abstract UniTask SaveAsync(ISavable entity);
-        protected abstract UniTask<bool> TryLoadAsync(ISavable entity);
+        protected abstract void Save(ISavable entity);
+        protected abstract bool TryLoad(ISavable entity);
     }
 }

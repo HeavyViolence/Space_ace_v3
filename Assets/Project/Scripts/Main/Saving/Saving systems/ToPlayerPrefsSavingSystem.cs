@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-
 using SpaceAce.Auxiliary;
 
 using System;
@@ -16,7 +14,7 @@ namespace SpaceAce.Main.Saving
 
         protected override string GetSavedDataPath(string savedDataName) => savedDataName;
 
-        protected async override UniTask SaveAsync(ISavable entity)
+        protected override void Save(ISavable entity)
         {
             string state = entity.GetSatate();
 
@@ -34,21 +32,16 @@ namespace SpaceAce.Main.Saving
             string path = GetSavedDataPath(entity.SavedDataName);
 
             PlayerPrefs.SetString(path, savableState);
-            await UniTask.Yield();
-
             MyMath.ResetMany(data, key, iv);
-            OnStateSaved(entity.SavedDataName);
         }
 
-        protected async override UniTask<bool> TryLoadAsync(ISavable entity)
+        protected override bool TryLoad(ISavable entity)
         {
             string path = GetSavedDataPath(entity.SavedDataName);
 
             if (PlayerPrefs.HasKey(path) == true)
             {
                 string loadedState = PlayerPrefs.GetString(path);
-                await UniTask.Yield();
-
                 byte[] loadedData = Convert.FromBase64String(loadedState);
 
                 byte[] encryptedData = loadedData[..^KeyGenerator.IVSize];
@@ -60,8 +53,6 @@ namespace SpaceAce.Main.Saving
                 entity.SetState(state);
 
                 MyMath.ResetMany(decryptedData, key, iv);
-                OnStateLoaded(entity.SavedDataName);
-
                 return true;
             }
 

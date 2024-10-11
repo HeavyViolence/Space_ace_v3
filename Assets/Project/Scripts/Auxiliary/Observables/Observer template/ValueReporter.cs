@@ -12,8 +12,10 @@ namespace SpaceAce.Auxiliary.Observables
 
         public void Subscribe(IObservable<T> source)
         {
-            _disposer = source is null ? throw new ArgumentNullException()
-                                       : source.Subscribe(this);
+            if (source is null)
+                throw new ArgumentNullException();
+
+            _disposer = source.Subscribe(this);
         }
 
         public void Unsubscribe() =>
