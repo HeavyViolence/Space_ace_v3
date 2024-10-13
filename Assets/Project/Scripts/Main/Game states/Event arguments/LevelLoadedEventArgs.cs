@@ -9,7 +9,9 @@ namespace SpaceAce.Main.GameStates
         public LevelLoadedEventArgs(int level)
         {
             if (level < 1)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
                 
             Level = level;
         }

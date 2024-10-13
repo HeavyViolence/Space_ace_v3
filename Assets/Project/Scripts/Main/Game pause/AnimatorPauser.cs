@@ -41,13 +41,17 @@ namespace SpaceAce.Main.GamePause
         public void Pause()
         {
             if (_animator != null)
+            {
                 _animator.speed = 0f;
+            }
         }
 
         public void Resume()
         {
             if ( _animator != null)
+            {
                 _animator.speed = 1f;
+            }
         }
 
         public override bool Equals(object obj) =>

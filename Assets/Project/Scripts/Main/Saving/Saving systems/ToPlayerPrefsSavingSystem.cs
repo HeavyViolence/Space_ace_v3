@@ -16,7 +16,7 @@ namespace SpaceAce.Main.Saving
 
         protected override void Save(ISavable entity)
         {
-            string state = entity.GetSatate();
+            string state = entity.GetState();
 
             byte[] data = UTF8.GetBytes(state);
             byte[] key = KeyGenerator.GenerateKey(entity.SavedDataName);

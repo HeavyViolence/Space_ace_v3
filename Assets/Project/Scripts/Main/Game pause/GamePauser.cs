@@ -14,7 +14,9 @@ namespace SpaceAce.Main.GamePause
         public bool Register(IPausable entity)
         {
             if (entity is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return _pausableEntities.Add(entity);
         }
@@ -22,7 +24,9 @@ namespace SpaceAce.Main.GamePause
         public bool Deregister(IPausable entity)
         {
             if (entity is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return _pausableEntities.Remove(entity);
         }
@@ -30,7 +34,9 @@ namespace SpaceAce.Main.GamePause
         public bool DeregisterAll()
         {
             if (_pausableEntities.Count == 0)
+            {
                 return false;
+            }
 
             _pausableEntities.Clear();
             return true;
@@ -38,10 +44,15 @@ namespace SpaceAce.Main.GamePause
 
         public void Pause()
         {
-            if (Paused == true) return;
+            if (Paused == true)
+            {
+                return;
+            }
 
             foreach (IPausable entity in _pausableEntities)
+            {
                 entity.Pause();
+            }
 
             Paused = true;
             GamePaused?.Invoke(this, EventArgs.Empty);
@@ -49,10 +60,15 @@ namespace SpaceAce.Main.GamePause
 
         public void Resume()
         {
-            if (Paused == false) return;
+            if (Paused == false)
+            {
+                return;
+            }
 
             foreach (IPausable entity in _pausableEntities)
-                entity.Resume();
+            {
+                return;
+            }
 
             Paused = false;
             GameResumed?.Invoke(this, EventArgs.Empty);

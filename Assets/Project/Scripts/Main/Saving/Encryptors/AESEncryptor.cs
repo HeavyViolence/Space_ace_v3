@@ -12,13 +12,19 @@ namespace SpaceAce.Main.Saving
         public override byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
         {
             if (data is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (KeyValidator.IsValidKey(key) == false)
+            {
                 throw new InvalidKeyException();
+            }
 
             if (KeyValidator.IsValidIV(iv) == false)
+            {
                 throw new InvalidIVException();
+            }
 
             using Aes algorithm = Aes.Create();
             using ICryptoTransform encryptor = algorithm.CreateEncryptor(key, iv);
@@ -37,13 +43,19 @@ namespace SpaceAce.Main.Saving
         public override byte[] Decrypt(byte[] data, byte[] key, byte[] iv)
         {
             if (data is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (KeyValidator.IsValidKey(key) == false)
+            {
                 throw new InvalidKeyException();
+            }
 
             if (KeyValidator.IsValidIV(iv) == false)
+            {
                 throw new InvalidIVException();
+            }
 
             using Aes algorithm = Aes.Create();
             using ICryptoTransform decryptor = algorithm.CreateDecryptor(key, iv);

@@ -9,7 +9,9 @@ namespace SpaceAce.Main.GameStates
         public MainMenuLoadingStartedEventArgs(float loadDelay)
         {
             if (loadDelay <= 0f)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             LoadDelay = loadDelay;
         }

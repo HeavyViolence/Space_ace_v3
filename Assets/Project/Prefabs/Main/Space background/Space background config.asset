@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5d185cc06128244ae00b78514f1804, type: 3}
+  m_Name: Space background config
+  m_EditorClassIdentifier: 
+  _mainMenuBackgroundScrollSpeed: {fileID: 11400000, guid: 0bfbc2284bf57de4ca278c0fe507e87c, type: 2}
+  _mainMenuBackgrounds:
+  - {fileID: 2100000, guid: 256fbc31f09a59a46beaa0c6e4c9d7aa, type: 2}
+  _spaceBackgroundScrollSpeed: {fileID: 11400000, guid: 3092c985c657c9446a54edee07a5780a, type: 2}
+  _spaceBackgrounds:
+  - {fileID: 2100000, guid: c26193da93b7e4b4798874ca874ddfbf, type: 2}
+  - {fileID: 2100000, guid: ba2a4fcd40398ab469c11f038cea3402, type: 2}
+  - {fileID: 2100000, guid: e3a4fe028c3bd9140a0196d95b37be72, type: 2}
+  - {fileID: 2100000, guid: f0803b1f7c0a5fe41aec51c1f1e16fe0, type: 2}
+  - {fileID: 2100000, guid: 8653248bdd88ab74dbd4e39053bdc903, type: 2}
+  - {fileID: 2100000, guid: 72976a38ad37cdf45a83b9fb0052b951, type: 2}
+  - {fileID: 2100000, guid: 155f931979d8dfe429271090cdd43353, type: 2}
+  - {fileID: 2100000, guid: 5fa358510a4f6a543875259d840fe700, type: 2}

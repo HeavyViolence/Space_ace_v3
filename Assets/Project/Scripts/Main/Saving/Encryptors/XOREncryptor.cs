@@ -12,13 +12,19 @@ namespace SpaceAce.Main.Saving
         public override byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
         {
             if (data is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (KeyValidator.IsValidKey(key) == false)
+            {
                 throw new InvalidKeyException();
+            }
 
             if (KeyValidator.IsValidIV(iv) == false)
+            {
                 throw new InvalidIVException();
+            }
 
             byte[] initializedKey = MyMath.XOR(key, iv);
 

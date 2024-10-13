@@ -10,10 +10,7 @@ namespace SpaceAce.Auxiliary.Easing
 
         public EasingService(EasingServiceConfig config)
         {
-            if (config == null)
-                throw new ArgumentNullException();
-
-            _config = config;
+            _config = config == null ? throw new ArgumentNullException() : config;
         }
 
         public float Ease(float min, float max, float t, EasingMode mode)

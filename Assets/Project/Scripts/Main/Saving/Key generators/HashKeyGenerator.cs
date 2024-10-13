@@ -17,7 +17,9 @@ namespace SpaceAce.Main.Saving
         {
             if (string.IsNullOrEmpty(savedDataName) == true ||
                 string.IsNullOrWhiteSpace(savedDataName) == true)
+            {
                 throw new ArgumentNullException();
+            }
 
             byte[] data = _utf8.GetBytes(savedDataName);
             byte[] hash = _sha256.ComputeHash(data);

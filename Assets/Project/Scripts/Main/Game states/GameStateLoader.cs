@@ -23,7 +23,10 @@ namespace SpaceAce.Main.GameStates
         public async UniTask LoadMainMenuAsync(float delay)
         {
             if (CurrentState == GameState.MainMenu ||
-                CurrentState == GameState.MainMenuLoading) return;
+                CurrentState == GameState.MainMenuLoading)
+            {
+                return;
+            }
 
             float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
 
@@ -40,9 +43,14 @@ namespace SpaceAce.Main.GameStates
         public async UniTask LoadLevelAsync(int level, float delay)
         {
             if (level < 1)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
-            if (LoadedLevel == level) return;
+            if (LoadedLevel == level)
+            {
+                return;
+            }
 
             float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
 

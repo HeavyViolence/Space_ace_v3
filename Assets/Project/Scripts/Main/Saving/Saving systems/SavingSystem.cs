@@ -28,7 +28,9 @@ namespace SpaceAce.Main.Saving
         public void Register(ISavable entity)
         {
             if (entity is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (_registeredEntities.Add(entity) == true)
             {
@@ -58,7 +60,9 @@ namespace SpaceAce.Main.Saving
         public void Deregister(ISavable entity)
         {
             if (entity is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (_registeredEntities.Remove(entity) == true)
             {

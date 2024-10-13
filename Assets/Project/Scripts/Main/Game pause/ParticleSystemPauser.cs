@@ -41,15 +41,23 @@ namespace SpaceAce.Main.GamePause
         public void Pause()
         {
             if (_particleSystems is not null)
+            {
                 foreach (ParticleSystem system in _particleSystems)
+                {
                     system.Pause();
+                }
+            }
         }
 
         public void Resume()
         {
-            if ( _particleSystems is not null)
+            if (_particleSystems is not null)
+            {
                 foreach (ParticleSystem system in _particleSystems)
+                {
                     system.Play();
+                }
+            }
         }
 
         public override bool Equals(object obj) =>

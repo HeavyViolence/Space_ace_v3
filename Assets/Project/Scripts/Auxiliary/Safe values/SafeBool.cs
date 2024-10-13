@@ -34,7 +34,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public bool Get()
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             try
             {
@@ -51,7 +53,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Set(bool value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             _value = BitConverter.GetBytes(value);
 
@@ -66,7 +70,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Dispose()
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             MyMath.ResetMany(_value, _iv);
             _valueTracker.Cancel();
@@ -78,7 +84,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             obj is not null && Equals(obj as SafeBool) == true;
 
         public bool Equals(SafeBool other) =>
-            other is not null && Get() == other.Get();
+            other is not null && Get().Equals(other.Get()) == true;
 
         public override int GetHashCode() =>
             _value.GetHashCode() ^ _iv.GetHashCode();
@@ -86,7 +92,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public int CompareTo(SafeBool other)
         {
             if (other is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return Get().CompareTo(other.Get());
         }
@@ -94,7 +102,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public int Compare(SafeBool x, SafeBool y)
         {
             if (x is null || y is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return x.Get().CompareTo(y.Get());
         }

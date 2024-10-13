@@ -15,13 +15,19 @@ namespace SpaceAce.Main.Saving
         public bool IsValidKey(byte[] key)
         {
             if (key is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (key.Length != ValidKeySize)
+            {
                 return false;
+            }
 
             if (MyMath.Randomness(key) < MinKeyRandomness)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -29,13 +35,19 @@ namespace SpaceAce.Main.Saving
         public bool IsValidIV(byte[] iv)
         {
             if (iv is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (iv.Length != ValidIVSize)
+            {
                 return false;
+            }
 
             if (MyMath.Randomness(iv) < MinIVRandomness)
+            {
                 return false;
+            }
 
             return true;
         }

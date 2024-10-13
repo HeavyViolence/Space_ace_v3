@@ -10,10 +10,14 @@ namespace SpaceAce.Auxiliary.Observables
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (observer is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             if (_observers.Contains(observer) == false)
+            {
                 _observers.Add(observer);
+            }
 
             return new ValueObserverDisposer<T>(_observers, observer);
         }
@@ -25,19 +29,25 @@ namespace SpaceAce.Auxiliary.Observables
                 ArgumentNullException ex = new();
 
                 foreach (var observer in _observers)
+                {
                     observer.OnError(ex);
+                }
 
                 return;
             }
 
             foreach (var observer in _observers)
+            {
                 observer.OnNext(value);
+            }
         }
 
         public void Cancel()
         {
             foreach (var observer in _observers)
+            {
                 observer.OnCompleted();
+            }
         }
     }
 }

@@ -10,12 +10,16 @@ namespace SpaceAce.Main.GameStates
         public LevelLoadingStartedEventArgs(int level, float loadDelay)
         {
             if (level < 1)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             Level = level;
 
             if (loadDelay <= 0f)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             LoadDelay = loadDelay;
         }

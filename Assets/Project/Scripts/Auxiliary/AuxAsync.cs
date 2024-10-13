@@ -15,12 +15,20 @@ namespace SpaceAce.Auxiliary
                                                Func<bool> pauseCondition,
                                                CancellationToken token = default)
         {
+            if (delayProvider is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             float timer = 0f;
             float delay = delayProvider();
 
             while (timer < delay)
             {
-                if (token.IsCancellationRequested == true) return;
+                if (token.IsCancellationRequested == true)
+                {
+                    return;
+                }
 
                 timer += Time.deltaTime;
 
@@ -33,6 +41,11 @@ namespace SpaceAce.Auxiliary
                                                Func<bool> pauseCondition,
                                                CancellationToken token = default)
         {
+            if (delayCondition is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             while (delayCondition() == true && token.IsCancellationRequested == false)
             {
                 await UniTask.WaitUntil(() => pauseCondition() == false);
@@ -45,6 +58,11 @@ namespace SpaceAce.Auxiliary
                                                      Func<bool> pauseCondition,
                                                      CancellationToken token = default)
         {
+            if (action is null || delayProvider is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             await DelayAsync(delayProvider, pauseCondition, token);
             action();
         }
@@ -54,6 +72,11 @@ namespace SpaceAce.Auxiliary
                                                      Func<bool> pauseCondition,
                                                      CancellationToken token = default)
         {
+            if (action is null || delayCondition is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             await DelayAsync(delayCondition, pauseCondition, token);
             action();
         }
@@ -63,6 +86,11 @@ namespace SpaceAce.Auxiliary
                                                      Func<bool> pauseCondition,
                                                      CancellationToken token = default)
         {
+            if (action is null || delayProvider is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             action();
             await DelayAsync(delayProvider, pauseCondition, token);
         }
@@ -72,6 +100,11 @@ namespace SpaceAce.Auxiliary
                                                      Func<bool> pauseCondition,
                                                      CancellationToken token = default)
         {
+            if (action is null || delayCondition is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             action();
             await DelayAsync(delayCondition, pauseCondition, token);
         }
@@ -82,10 +115,18 @@ namespace SpaceAce.Auxiliary
                                                    Func<bool> pauseCondition,
                                                    CancellationToken token = default)
         {
+            if (action is null || firstDelayProvider is null ||
+                regularDelayProvider is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             await DelayAsync(firstDelayProvider, pauseCondition, token);
 
             while (token.IsCancellationRequested == false)
+            {
                 await DoThenDelayAsync(action, regularDelayProvider, pauseCondition, token);
+            }
         }
 
         public static async UniTask DoForeverAsync(Action action,
@@ -94,10 +135,18 @@ namespace SpaceAce.Auxiliary
                                                    Func<bool> pauseCondition,
                                                    CancellationToken token = default)
         {
+            if (action is null || firstDelayCondition is null ||
+                regularDelayCondition is null || pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             await DelayAsync(firstDelayCondition, pauseCondition, token);
 
             while (token.IsCancellationRequested == false)
+            {
                 await DoThenDelayAsync(action, regularDelayCondition, pauseCondition, token);
+            }
         }
 
         #endregion

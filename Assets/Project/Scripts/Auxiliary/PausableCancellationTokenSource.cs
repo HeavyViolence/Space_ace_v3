@@ -9,6 +9,16 @@ namespace SpaceAce.Auxiliary
     {
         public PausableCancellationTokenSource(float delay, Func<bool> pauseCondition)
         {
+            if (delay < 0f)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (pauseCondition is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             CancelAsync(delay, pauseCondition).Forget();
         }
 
@@ -17,7 +27,9 @@ namespace SpaceAce.Auxiliary
             await AuxAsync.DelayAsync(() => delay, pauseCondition, Token);
 
             if (Token.IsCancellationRequested == false)
+            {
                 Cancel();
+            }
         }
     }
 }

@@ -11,15 +11,15 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemies
+  - Bosses
+  - Player projectiles
+  - Enemy projectiles
+  - Meteors
+  - Wrecks
+  - Bombs
+  - Loot
   - 
   - 
   - 

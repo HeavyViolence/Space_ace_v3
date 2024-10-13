@@ -11,30 +11,86 @@ namespace SpaceAce.Auxiliary
     {
         #region random operations
 
-        public static float RandomNormal => UnityEngine.Random.Range(-1f, 1f);
         public static float RandomUnit => UnityEngine.Random.Range(0f, 1f);
+        public static float RandomNormal => UnityEngine.Random.Range(-1f, 1f);
+        public static float RandomSign => RandomNormal > 0f ? 1f : -1f;
         public static bool RandomBool => RandomNormal > 0f;
 
         public static IEnumerable<int> GetValuesInRandomOrder(int minInclusive, int maxExclusive, IEnumerable<int> exclusions = null)
         {
             if (minInclusive >= maxExclusive)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
-            int amount = exclusions is null ? maxExclusive - minInclusive
-                                            : maxExclusive - minInclusive - exclusions.Count();
+            int count;
+
+            if (exclusions is null)
+            {
+                count = maxExclusive - minInclusive;
+
+                return Enumerable.Range(minInclusive, maxExclusive - minInclusive)
+                                 .OrderBy(x => UnityEngine.Random.Range(0, count));
+            }
+
+            count = maxExclusive - minInclusive - exclusions.Count();
 
             return Enumerable.Range(minInclusive, maxExclusive - minInclusive)
                              .Except(exclusions)
-                             .OrderBy(x => UnityEngine.Random.Range(0, amount));
+                             .OrderBy(x => UnityEngine.Random.Range(0, count));
         }
 
         public static IEnumerable<T> Shuffle<T>(IEnumerable<T> collection)
         {
             if (collection is null)
+            {
                 throw new ArgumentNullException();
+            }
 
-            int amount = collection.Count();
-            return collection.OrderBy(x => UnityEngine.Random.Range(0, amount));
+            int count = collection.Count();
+
+            if (count == 1)
+            {
+                return collection;
+            }
+
+            return collection.OrderBy(x => UnityEngine.Random.Range(0, count));
+        }
+
+        public static T GetRandom<T>(IEnumerable<T> collection)
+        {
+            if (collection is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            int count = collection.Count();
+
+            if (count == 1)
+            {
+                return collection.FirstOrDefault();
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, count);
+            return collection.ElementAtOrDefault(randomIndex);
+        }
+
+        public static KeyValuePair<K, V> GetRandom<K, V>(IEnumerable<KeyValuePair<K, V>> collection)
+        {
+            if (collection is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            int count = collection.Count();
+
+            if (count == 1)
+            {
+                return collection.FirstOrDefault();
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, count);
+            return collection.ElementAtOrDefault(randomIndex);
         }
 
         #endregion
@@ -55,21 +111,20 @@ namespace SpaceAce.Auxiliary
 
         public static Dictionary<UnityEngine.Vector2, T> InterpolateValuesByRange<T>(AnimationCurve interpolation, IEnumerable<T> values)
         {
-            if (interpolation == null)
+            if (interpolation == null || values is null)
+            {
                 throw new ArgumentNullException();
+            }
 
-            if (values is null)
-                throw new ArgumentNullException();
-
-            int valuesAmount = values.Count();
+            int count = values.Count();
             int counter = 0;
 
-            Dictionary<UnityEngine.Vector2, T> result = new(valuesAmount);
+            Dictionary<UnityEngine.Vector2, T> result = new(count);
 
             foreach (T value in values)
             {
-                float rangeStart = interpolation.Evaluate((float)counter / valuesAmount);
-                float rangeEnd = interpolation.Evaluate((float)(counter + 1) / valuesAmount);
+                float rangeStart = interpolation.Evaluate((float)counter / count);
+                float rangeEnd = interpolation.Evaluate((float)(counter + 1) / count);
 
                 UnityEngine.Vector2 range = new(rangeStart, rangeEnd);
                 result.Add(range, value);
@@ -82,16 +137,8 @@ namespace SpaceAce.Auxiliary
 
         public static Dictionary<UnityEngine.Vector2, T> InterpolateEnumByRange<T>(AnimationCurve interpolation, IEnumerable<T> customOrder = null) where T : Enum
         {
-            T[] members;
-
-            if (customOrder is null)
-            {
-                members = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
-            }
-            else
-            {
-                members = customOrder.ToArray();
-            }
+            T[] members = customOrder is null ? Enum.GetValues(typeof(T)).Cast<T>().ToArray()
+                                              : customOrder.ToArray();
 
             Dictionary<UnityEngine.Vector2, T> result = new(members.Length);
 
@@ -112,18 +159,12 @@ namespace SpaceAce.Auxiliary
         public static Dictionary<T, UnityEngine.Vector2> InterpolateRangeByEnum<T>(AnimationCurve interpolation, IEnumerable<T> customOrder = null) where T : Enum
         {
             if (interpolation == null)
+            {
                 throw new ArgumentNullException();
-
-            T[] members;
-
-            if (customOrder is null)
-            {
-                members = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
             }
-            else
-            {
-                members = customOrder.ToArray();
-            }
+
+            T[] members = customOrder is null ? Enum.GetValues(typeof(T)).Cast<T>().ToArray()
+                                              : customOrder.ToArray();
 
             Dictionary<T, UnityEngine.Vector2> result = new(members.Length);
 
@@ -172,19 +213,25 @@ namespace SpaceAce.Auxiliary
         public static void ResetMany(params byte[][] buffers)
         {
             foreach (byte[] buffer in buffers)
+            {
                 Reset(buffer);
+            }
         }
 
         public static void Reset(byte[] buffer)
         {
             for (int i = 0; i < buffer.Length; i++)
+            {
                 buffer[i] = 0;
+            }
         }
 
         public static bool ContainsEqualValues(byte[] input, float fraction = 1f)
         {
             if (fraction <= 0f || fraction > 1f)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             byte value = 0;
             float counter = 0f;
@@ -192,11 +239,17 @@ namespace SpaceAce.Auxiliary
             do
             {
                 foreach (byte b in input)
+                {
                     if (b == value)
+                    {
                         counter++;
+                    }
+                }
 
                 if (counter / input.Length >= fraction)
+                {
                     return true;
+                }
 
                 counter = 0f;
             }
@@ -210,7 +263,9 @@ namespace SpaceAce.Auxiliary
             int sum = 0;
 
             foreach (byte b in input)
+            {
                 sum += b;
+            }
 
             float averageSum = (float)sum / input.Length;
             float r = averageSum / AverageByteValue;
@@ -239,17 +294,27 @@ namespace SpaceAce.Auxiliary
         public static bool IsPrime(int number, float error = 1e-6f)
         {
             if (error <= 0f || error >= 1f)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             if (number < 2)
+            {
                 return false;
+            }
 
             if (_primesUpTo100.Contains(number) == true)
+            {
                 return true;
+            }
 
             foreach (int p in _primesUpTo100)
+            {
                 if (number % p == 0)
+                {
                     return false;
+                }
+            }
 
             (int power, int multiple) = DecomposeToPowerAndSmallestMultiple(number - 1, 2);
             int iterations = Mathf.CeilToInt(-1f * Mathf.Log(error, 4f));
@@ -265,12 +330,17 @@ namespace SpaceAce.Auxiliary
                     y = BigInteger.ModPow(x, 2, number);
 
                     if (y == 1 && x != 1 && x != number - 1)
+                    {
                         return false;
+                    }
 
                     x = y;
                 }
 
-                if (y != 1) return false;
+                if (y != 1)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -278,33 +348,53 @@ namespace SpaceAce.Auxiliary
 
         public static int NearestPrimeBelow(int n)
         {
-            if (n <= 2) throw new ArgumentOutOfRangeException();
-            if (n == 3) return 2;
+            if (n <= 2)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (n == 3)
+            {
+                return 2;
+            }
 
             int largestCandidate = n % 2 == 0 ? n - 1 : n - 2;
 
             for (int i = largestCandidate; i >= 3; i -= 2)
+            {
                 if (IsPrime(i) == true)
+                {
                     return i;
+                }
+            }
 
             throw new ArithmeticException();
         }
 
         public static int NearestPrimeAbove(int n)
         {
-            if (n < 2) return 2;
+            if (n < 2)
+            {
+                return 2;
+            }
 
             int smallestCandidate = n % 2 == 0 ? n + 1 : n + 2;
 
             for (int i = smallestCandidate; ; i += 2)
+            {
                 if (IsPrime(i) == true)
+                {
                     return i;
+                }
+            }
         }
 
         public static void PrimeTransform(byte[] buffer)
         {
             if (buffer.Length <= 2)
+            {
                 throw new Exception("The buffer must be at least 3 bytes long!");
+            }
 
             int period = NearestPrimeBelow(buffer.Length);
             int delta = buffer.Length - period;
@@ -333,10 +423,14 @@ namespace SpaceAce.Auxiliary
         public static (int power, int mulpiple) DecomposeToPowerAndSmallestMultiple(int number, int basis)
         {
             if (number <= 0 || basis <= 1)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             if (number % basis != 0 || basis > number)
+            {
                 return (0, number);
+            }
 
             int residue = number;
             int power = 0;

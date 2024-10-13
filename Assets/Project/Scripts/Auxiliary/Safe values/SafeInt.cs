@@ -34,7 +34,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public int Get()
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             try
             {
@@ -51,7 +53,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Set(int value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             _value = BitConverter.GetBytes(value);
 
@@ -64,7 +68,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Add(int value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             MyMath.XORInternal(_value, _iv);
 
@@ -77,7 +83,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Subtract(int value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             MyMath.XORInternal(_value, _iv);
 
@@ -90,7 +98,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Multiply(int value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             MyMath.XORInternal(_value, _iv);
 
@@ -103,10 +113,14 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Divide(int value)
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             if (value == 0)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             MyMath.XORInternal(_value, _iv);
 
@@ -121,7 +135,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public void Dispose()
         {
             if (_disposed == true)
+            {
                 throw new DisposedException();
+            }
 
             MyMath.ResetMany(_value, _iv);
             _valueTracker.Cancel();
@@ -133,7 +149,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             obj is not null && Equals(obj as SafeInt) == true;
 
         public bool Equals(SafeInt other) =>
-            Get() == other.Get();
+            other is not null && Get().Equals(other.Get()) == true;
 
         public override int GetHashCode() =>
             _value.GetHashCode() ^ _iv.GetHashCode();
@@ -141,7 +157,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public int CompareTo(SafeInt other)
         {
             if (other is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return Get().CompareTo(other.Get());
         }
@@ -149,7 +167,9 @@ namespace SpaceAce.Auxiliary.SafeValues
         public int Compare(SafeInt x, SafeInt y)
         {
             if (x is null || y is null)
+            {
                 throw new ArgumentNullException();
+            }
 
             return x.Get().CompareTo(y.Get());
         }
