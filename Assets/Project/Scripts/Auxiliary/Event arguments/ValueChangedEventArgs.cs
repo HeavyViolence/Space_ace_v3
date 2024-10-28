@@ -1,6 +1,6 @@
 using System;
 
-namespace SpaceAce.Auxiliary.Observables
+namespace SpaceAce.Auxiliary.EventArguments
 {
     public sealed class ValueChangedEventArgs<T> : EventArgs
     {

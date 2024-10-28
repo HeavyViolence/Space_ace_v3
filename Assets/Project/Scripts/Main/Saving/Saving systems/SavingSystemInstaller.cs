@@ -31,6 +31,7 @@ namespace SpaceAce.Main.Saving
             {
                 EncryptionType.None => new BlankKeyGenerator(),
                 EncryptionType.XOR => new HashKeyGenerator(),
+                EncryptionType.ArithmeticTransform => new HashKeyGenerator(),
                 EncryptionType.PrimeTransform => new HashKeyGenerator(),
                 EncryptionType.AES => new AESKeyGenerator(),
                 _ => new BlankKeyGenerator()
@@ -43,6 +44,7 @@ namespace SpaceAce.Main.Saving
             {
                 EncryptionType.None => new BlankKeyValidator(),
                 EncryptionType.XOR => new HashKeyValidator(),
+                EncryptionType.ArithmeticTransform => new HashKeyValidator(),
                 EncryptionType.PrimeTransform => new HashKeyValidator(),
                 EncryptionType.AES => new AESKeyValidator(),
                 _ => new BlankKeyValidator()
@@ -55,6 +57,7 @@ namespace SpaceAce.Main.Saving
             {
                 EncryptionType.None => new BlankEncryptor(validator),
                 EncryptionType.XOR => new XOREncryptor(validator),
+                EncryptionType.ArithmeticTransform => new ArithmeticTransformEncryptor(validator),
                 EncryptionType.PrimeTransform => new PrimeTransformEncryptor(validator),
                 EncryptionType.AES => new AESEncryptor(validator),
                 _ => new BlankEncryptor(validator)

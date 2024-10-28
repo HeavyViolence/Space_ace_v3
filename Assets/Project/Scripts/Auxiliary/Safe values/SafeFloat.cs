@@ -17,11 +17,12 @@ namespace SpaceAce.Auxiliary.SafeValues
 
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-        private byte[] _value;
+        private readonly byte[] _value;
         private readonly byte[] _iv = new byte[BytesPerFloat];
-        private bool _disposed = false;
 
         private readonly ValueTracker<float> _valueTracker = new();
+
+        private bool _disposed = false;
 
         public SafeFloat(float value = 0f)
         {
@@ -57,12 +58,22 @@ namespace SpaceAce.Auxiliary.SafeValues
                 throw new DisposedException();
             }
 
-            _value = BitConverter.GetBytes(value);
-
-            _rng.GetBytes(_iv);
             MyMath.XORInternal(_value, _iv);
+            float currentValue = BitConverter.ToSingle(_value);
 
-            _valueTracker.Track(value);
+            if (currentValue == value)
+            {
+                MyMath.XORInternal(_value, _iv);
+            }
+            else
+            {
+                BitConverter.GetBytes(value).CopyTo(_value, 0);
+
+                _rng.GetBytes(_iv);
+                MyMath.XORInternal(_value, _iv);
+
+                _valueTracker.Track(value);
+            }
         }
 
         public void Add(float value)
@@ -72,34 +83,36 @@ namespace SpaceAce.Auxiliary.SafeValues
                 throw new DisposedException();
             }
 
+            if (value == 0f)
+            {
+                return;
+            }
+
             MyMath.XORInternal(_value, _iv);
 
             float oldValue = BitConverter.ToSingle(_value);
             float newValue = oldValue + value;
 
-            Set(newValue);
+            BitConverter.GetBytes(newValue).CopyTo(_value, 0);
+
+            _rng.GetBytes(_iv);
+            MyMath.XORInternal(_value, _iv);
+
+            _valueTracker.Track(newValue);
         }
 
-        public void Subtract(float value)
+        public void Subtract(float value) => Add(-1f * value);
+
+        public void MultiplyBy(float value)
         {
             if (_disposed == true)
             {
                 throw new DisposedException();
             }
 
-            MyMath.XORInternal(_value, _iv);
-
-            float oldValue = BitConverter.ToSingle(_value);
-            float newValue = oldValue - value;
-
-            Set(newValue);
-        }
-
-        public void Multiply(float value)
-        {
-            if (_disposed == true)
+            if (value == 1f)
             {
-                throw new DisposedException();
+                return;
             }
 
             MyMath.XORInternal(_value, _iv);
@@ -107,10 +120,15 @@ namespace SpaceAce.Auxiliary.SafeValues
             float oldValue = BitConverter.ToSingle(_value);
             float newValue = oldValue * value;
 
-            Set(newValue);
+            BitConverter.GetBytes(newValue).CopyTo(_value, 0);
+
+            _rng.GetBytes(_iv);
+            MyMath.XORInternal(_value, _iv);
+
+            _valueTracker.Track(newValue);
         }
 
-        public void Divide(float value)
+        public void DivideBy(float value)
         {
             if (_disposed == true)
             {
@@ -122,12 +140,22 @@ namespace SpaceAce.Auxiliary.SafeValues
                 throw new ArgumentOutOfRangeException();
             }
 
+            if (value == 1f)
+            {
+                return;
+            }
+
             MyMath.XORInternal(_value, _iv);
 
             float oldValue = BitConverter.ToSingle(_value);
             float newValue = oldValue / value;
 
-            Set(newValue);
+            BitConverter.GetBytes(newValue).CopyTo(_value, 0);
+
+            _rng.GetBytes(_iv);
+            MyMath.XORInternal(_value, _iv);
+
+            _valueTracker.Track(newValue);
         }
 
         #region interfaces

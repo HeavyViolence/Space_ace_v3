@@ -1,3 +1,5 @@
+using SpaceAce.Auxiliary.EventArguments;
+
 using System;
 
 namespace SpaceAce.Auxiliary.Observables

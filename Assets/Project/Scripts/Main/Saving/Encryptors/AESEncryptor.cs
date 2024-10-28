@@ -31,8 +31,7 @@ namespace SpaceAce.Main.Saving
 
             try
             {
-                byte[] result = encryptor.TransformFinalBlock(data, 0, data.Length);
-                return result;
+                return encryptor.TransformFinalBlock(data, 0, data.Length);
             }
             finally
             {

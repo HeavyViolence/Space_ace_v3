@@ -35,7 +35,7 @@ namespace SpaceAce.Main.Saving
             MyMath.ResetMany(data, key, iv);
         }
 
-        protected override bool TryLoad(ISavable entity)
+        protected override bool TryLoad(ISavable entity, bool initialDefaultStateFallback)
         {
             string path = GetSavedDataPath(entity.SavedDataName);
 
@@ -55,8 +55,11 @@ namespace SpaceAce.Main.Saving
                 MyMath.ResetMany(decryptedData, key, iv);
                 return true;
             }
-
-            entity.SetDefaultState();
+            else if (initialDefaultStateFallback == true)
+            {
+                entity.SetDefaultState();
+            }
+            
             return false;
         }
     }

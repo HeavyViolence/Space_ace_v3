@@ -24,7 +24,7 @@ namespace SpaceAce.Main.Saving
                 return false;
             }
 
-            if (MyMath.Randomness(key) < MinKeyRandomness)
+            if (MyMath.CalculateRandomness(key) < MinKeyRandomness)
             {
                 return false;
             }
@@ -44,7 +44,7 @@ namespace SpaceAce.Main.Saving
                 return false;
             }
 
-            if (MyMath.Randomness(iv) < MinIVRandomness)
+            if (MyMath.CalculateRandomness(iv) < MinIVRandomness)
             {
                 return false;
             }

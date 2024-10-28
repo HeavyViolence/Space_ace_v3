@@ -17,11 +17,12 @@ namespace SpaceAce.Auxiliary.SafeValues
 
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-        private byte[] _value;
+        private readonly byte[] _value;
         private readonly byte[] _iv = new byte[BytesPerBool];
-        private bool _disposed = false;
 
         private readonly ValueTracker<bool> _valueTracker = new();
+
+        private bool _disposed = false;
 
         public SafeBool(bool value = false)
         {
@@ -57,12 +58,22 @@ namespace SpaceAce.Auxiliary.SafeValues
                 throw new DisposedException();
             }
 
-            _value = BitConverter.GetBytes(value);
-
-            _rng.GetBytes(_iv);
             MyMath.XORInternal(_value, _iv);
+            bool currentValue = BitConverter.ToBoolean(_value);
 
-            _valueTracker.Track(value);
+            if (currentValue == value)
+            {
+                MyMath.XORInternal(_value, _iv);
+            }
+            else
+            {
+                BitConverter.GetBytes(value).CopyTo(_value, 0);
+
+                _rng.GetBytes(_iv);
+                MyMath.XORInternal(_value, _iv);
+
+                _valueTracker.Track(value);
+            }
         }
 
         #region interfaces

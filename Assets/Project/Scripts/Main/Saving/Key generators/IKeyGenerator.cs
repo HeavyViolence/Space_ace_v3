@@ -5,7 +5,7 @@ namespace SpaceAce.Main.Saving
         int KeySize { get; }
         int IVSize { get; }
 
-        byte[] GenerateKey(string savedDataName);
+        byte[] GenerateKey(string seed);
         byte[] GenerateIV();
     }
 }

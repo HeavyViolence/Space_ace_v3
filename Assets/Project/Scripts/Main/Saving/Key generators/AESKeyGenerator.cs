@@ -13,15 +13,15 @@ namespace SpaceAce.Main.Saving
         public int KeySize => 32;
         public int IVSize => 16;
 
-        public byte[] GenerateKey(string savedDataName)
+        public byte[] GenerateKey(string seed)
         {
-            if (string.IsNullOrEmpty(savedDataName) == true ||
-                string.IsNullOrWhiteSpace(savedDataName) == true)
+            if (string.IsNullOrEmpty(seed) == true ||
+                string.IsNullOrWhiteSpace(seed) == true)
             {
                 throw new ArgumentNullException();
             }
 
-            byte[] data = _utf8.GetBytes(savedDataName);
+            byte[] data = _utf8.GetBytes(seed);
             byte[] hash = _sha256.ComputeHash(data);
 
             return hash;

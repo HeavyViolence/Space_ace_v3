@@ -34,7 +34,7 @@ namespace SpaceAce.Main.Saving
 
                 for (int i = 0; i < data.Length; i++)
                 {
-                    int keyIndex = i % initializedKey.Length;
+                    int keyIndex = i % key.Length;
 
                     if (keyIndex == 0 && i > 0)
                     {

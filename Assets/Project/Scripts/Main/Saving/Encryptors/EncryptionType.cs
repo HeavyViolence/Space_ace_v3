@@ -2,6 +2,10 @@ namespace SpaceAce.Main.Saving
 {
     public enum EncryptionType
     {
-        None, XOR, PrimeTransform, AES
+        None,
+        XOR,
+        ArithmeticTransform,
+        PrimeTransform,
+        AES
     }
 }

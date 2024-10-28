@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
 using SpaceAce.Auxiliary;
+using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.GamePause;
 using SpaceAce.Main.Saving;
 
@@ -16,6 +17,7 @@ namespace SpaceAce.Main.MasterCamera
     public sealed class MasterCameraShaker : IInitializable, IDisposable, ISavable, IFixedTickable
     {
         public event EventHandler SavingRequested;
+        public event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
 
         private readonly HashSet<ShakeRequest> _shakeRequests = new();
         private readonly HashSet<ShakeRequest> _shakeRequestsToBeDeleted = new();
@@ -46,7 +48,7 @@ namespace SpaceAce.Main.MasterCamera
             }
         }
 
-        public string SavedDataName => "Camera shaking";
+        public string SavedDataName => "Camera shake settings";
 
         public MasterCameraShaker(MasterCameraShakerConfig config,
                                   MasterCameraHolder masterCameraHolder,
@@ -141,7 +143,7 @@ namespace SpaceAce.Main.MasterCamera
 
         public void Initialize()
         {
-            _savingSystem.Register(this);
+            _savingSystem.Register(this, false);
         }
 
         public void Dispose()
@@ -149,13 +151,23 @@ namespace SpaceAce.Main.MasterCamera
             _savingSystem.Deregister(this);
         }
 
-        public string GetState() => JsonConvert.SerializeObject(Settings);
+        public string GetState() => JsonConvert.SerializeObject(Settings, Formatting.Indented);
 
-        public void SetState(string state) =>
-            _settings = JsonConvert.DeserializeObject<MasterCameraShakerSettings>(state);
+        public void SetState(string state)
+        {
+            try
+            {
+                _settings = JsonConvert.DeserializeObject<MasterCameraShakerSettings>(state);
+            }
+            catch (Exception ex)
+            {
+                SetDefaultState();
+                ErrorOccurred?.Invoke(this, new(ex));
+            }
+        }
 
         public void SetDefaultState() =>
-            _settings = new(ShakeSettings.Default, ShakeSettings.Default, ShakeSettings.Default, ShakeSettings.Default);
+            _settings = MasterCameraShakerSettings.Default;
 
         public override bool Equals(object obj) =>
             obj is not null && Equals(obj as ISavable);

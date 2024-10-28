@@ -51,7 +51,7 @@ namespace SpaceAce.Auxiliary
 
             if (count == 1)
             {
-                return collection;
+                throw new Exception("Collection to shuffle must contain more than 1 element!");
             }
 
             return collection.OrderBy(x => UnityEngine.Random.Range(0, count));
@@ -258,7 +258,7 @@ namespace SpaceAce.Auxiliary
             return false;
         }
 
-        public static float Randomness(byte[] input)
+        public static float CalculateRandomness(byte[] input)
         {
             int sum = 0;
 
@@ -271,6 +271,30 @@ namespace SpaceAce.Auxiliary
             float r = averageSum / AverageByteValue;
 
             return r > 1f ? 2f - r : r;
+        }
+
+        public static void ArithmeticTransform(byte[] input)
+        {
+            int length = input.Length;
+
+            if (length < 3)
+            {
+                throw new Exception("Input must be at least 3 bytes long!");
+            }
+
+            int delta = length % 2 == 0 ? 1 : 2;
+            int period = length - delta;
+
+            for (int i = 0; i < length; i++)
+            {
+                int index1 = (i + delta) % length;
+                int index2 = (i + delta + period - 1) % length;
+
+                byte value1 = input[index1];
+                byte value2 = input[index2];
+
+                input[i] = (byte)(value1 + value2);
+            }
         }
 
         #endregion
@@ -316,7 +340,7 @@ namespace SpaceAce.Auxiliary
                 }
             }
 
-            (int power, int multiple) = DecomposeToPowerAndSmallestMultiple(number - 1, 2);
+            (int power, int multiple) = ToPowerAndSmallestMultiple(number - 1, 2);
             int iterations = Mathf.CeilToInt(-1f * Mathf.Log(error, 4f));
             BigInteger x, y;
 
@@ -389,30 +413,28 @@ namespace SpaceAce.Auxiliary
             }
         }
 
-        public static void PrimeTransform(byte[] buffer)
+        public static void PrimeTransform(byte[] input)
         {
-            if (buffer.Length <= 2)
+            int length = input.Length;
+
+            if (length < 3)
             {
-                throw new Exception("The buffer must be at least 3 bytes long!");
+                throw new Exception("Input must be at least 3 bytes long!");
             }
 
-            int period = NearestPrimeBelow(buffer.Length);
-            int delta = buffer.Length - period;
+            int period = NearestPrimeBelow(length);
+            int delta = length - period;
 
-            for (int i = 0; i < buffer.Length; i++)
+            for (int i = 0; i < length; i++)
             {
-                int t1 = (i + delta) % buffer.Length;
-                int t1a = t1 == buffer.Length - 1 ? 0 : t1 + 1;
-                int t1b = t1 == 0 ? buffer.Length - 1 : t1 - 1;
+                int index1 = (i + delta) % length;
+                int index2 = (i + delta + period - 1) % length;
 
-                int t2 = (i + delta + period - 1) % buffer.Length;
-                int t2a = t2 == buffer.Length - 1 ? 0 : t1 + 1;
-                int t2b = t2 == 0 ? buffer.Length - 1 : t2 - 1;
+                byte value1 = input[index1];
+                byte value2 = input[index2];
 
-                int p = buffer[t1a] * buffer[t1b] * buffer[t2a] * buffer[t2b] + 1;
-
-                buffer[i] = IsPrime(p) == true ? (byte)(buffer[t1] - buffer[t2])
-                                               : (byte)(buffer[t1] + buffer[t2]);
+                int result = IsPrime(value1 * value2 + 1) ? value1 - value2 : value1 + value2;
+                input[i] = (byte)result;
             }
         }
 
@@ -420,7 +442,7 @@ namespace SpaceAce.Auxiliary
 
         #region arithmetic functions
 
-        public static (int power, int mulpiple) DecomposeToPowerAndSmallestMultiple(int number, int basis)
+        public static (int power, int mulpiple) ToPowerAndSmallestMultiple(int number, int basis)
         {
             if (number <= 0 || basis <= 1)
             {

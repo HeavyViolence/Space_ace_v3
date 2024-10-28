@@ -5,12 +5,12 @@ namespace SpaceAce.Main.Saving
     public sealed class LoadingFailedEventArgs : EventArgs
     {
         public string SavedDataName { get; }
-        public Exception Exception { get; }
+        public Exception Error { get; }
 
-        public LoadingFailedEventArgs(string savedDataName, Exception ex)
+        public LoadingFailedEventArgs(string savedDataName, Exception error)
         {
             SavedDataName = savedDataName;
-            Exception = ex ?? throw new ArgumentNullException();
+            Error = error ?? throw new ArgumentNullException();
         }
     }
 }

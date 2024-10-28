@@ -30,8 +30,7 @@ namespace SpaceAce.Main.Saving
 
             try
             {
-                byte[] result = MyMath.XOR(data, initializedKey);
-                return result;
+                return MyMath.XOR(data, initializedKey);
             }
             finally
             {
