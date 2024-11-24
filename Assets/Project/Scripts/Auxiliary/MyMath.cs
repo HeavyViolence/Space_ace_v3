@@ -23,20 +23,11 @@ namespace SpaceAce.Auxiliary
                 throw new ArgumentOutOfRangeException();
             }
 
-            int count;
-
-            if (exclusions is null)
-            {
-                count = maxExclusive - minInclusive;
-
-                return Enumerable.Range(minInclusive, maxExclusive - minInclusive)
-                                 .OrderBy(x => UnityEngine.Random.Range(0, count));
-            }
-
-            count = maxExclusive - minInclusive - exclusions.Count();
+            int count = exclusions is null ? maxExclusive - minInclusive
+                                           : maxExclusive - minInclusive - exclusions.Count();
 
             return Enumerable.Range(minInclusive, maxExclusive - minInclusive)
-                             .Except(exclusions)
+                             .Except(exclusions ?? Enumerable.Empty<int>())
                              .OrderBy(x => UnityEngine.Random.Range(0, count));
         }
 
@@ -282,18 +273,17 @@ namespace SpaceAce.Auxiliary
                 throw new Exception("Input must be at least 3 bytes long!");
             }
 
-            int delta = length % 2 == 0 ? 1 : 2;
-            int period = length - delta;
-
             for (int i = 0; i < length; i++)
             {
-                int index1 = (i + delta) % length;
-                int index2 = (i + delta + period - 1) % length;
+                int index1 = i;
+                int index2 = (i + length - 1) % length;
+                int index3 = (i + 1) % length;
 
                 byte value1 = input[index1];
                 byte value2 = input[index2];
+                bool t = input[index3] % 3 == 0;
 
-                input[i] = (byte)(value1 + value2);
+                input[i] = t ? (byte)(value1 + value2) : (byte)(value1 - value2);
             }
         }
 

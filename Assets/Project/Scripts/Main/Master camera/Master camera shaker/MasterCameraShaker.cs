@@ -143,7 +143,7 @@ namespace SpaceAce.Main.MasterCamera
 
         public void Initialize()
         {
-            _savingSystem.Register(this, false);
+            _savingSystem.Register(this);
         }
 
         public void Dispose()
@@ -155,19 +155,18 @@ namespace SpaceAce.Main.MasterCamera
 
         public void SetState(string state)
         {
+            MasterCameraShakerSettings initialSettings = _settings;
+
             try
             {
                 _settings = JsonConvert.DeserializeObject<MasterCameraShakerSettings>(state);
             }
             catch (Exception ex)
             {
-                SetDefaultState();
+                _settings = initialSettings;
                 ErrorOccurred?.Invoke(this, new(ex));
             }
         }
-
-        public void SetDefaultState() =>
-            _settings = MasterCameraShakerSettings.Default;
 
         public override bool Equals(object obj) =>
             obj is not null && Equals(obj as ISavable);

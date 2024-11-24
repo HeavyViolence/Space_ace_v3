@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Project/Prefabs/UI/Styles/Button.uss?fileID=7433441132597879392&amp;guid=1cd45f8521b1c01419ccdbd47b51d22e&amp;type=3#Button" />
+    <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Button" class="Button" style="margin-bottom: 12px; width: 256px; margin-top: 0; margin-right: 0; margin-left: 0;" />
+</ui:UXML>

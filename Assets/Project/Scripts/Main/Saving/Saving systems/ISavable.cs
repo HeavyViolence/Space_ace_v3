@@ -12,8 +12,6 @@ namespace SpaceAce.Main.Saving
         string SavedDataName { get; }
 
         string GetState();
-
         void SetState(string state);
-        void SetDefaultState();
     }
 }

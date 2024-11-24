@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 
 using Newtonsoft.Json;
+
 using SpaceAce.Auxiliary;
 using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.GamePause;
@@ -30,7 +31,7 @@ namespace SpaceAce.Main.Audio
         public bool IsPlaying { get; private set; } = false;
         public string SavedDataName => "Music settings";
 
-        private MusicPlayerSettings _settings;
+        private MusicPlayerSettings _settings = MusicPlayerSettings.Default;
 
         public MusicPlayerSettings Settings
         {
@@ -79,7 +80,7 @@ namespace SpaceAce.Main.Audio
 
         public virtual void Initialize()
         {
-            _savingSystem.Register(this, true);
+            _savingSystem.Register(this);
         }
 
         public virtual void Dispose()
@@ -98,12 +99,10 @@ namespace SpaceAce.Main.Audio
             }
             catch (Exception ex)
             {
-                SetDefaultState();
+                _settings = MusicPlayerSettings.Default;
                 ErrorOccurred?.Invoke(this, new(ex));
             }
         }
-
-        public void SetDefaultState() => _settings = MusicPlayerSettings.Default;
 
         public override bool Equals(object obj) =>
             obj is not null && Equals(obj as ISavable);

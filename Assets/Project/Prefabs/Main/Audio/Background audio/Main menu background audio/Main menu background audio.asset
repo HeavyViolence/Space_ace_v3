@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76aaa0146fece64099541f94fa64bd6, type: 3}
+  m_Name: Main menu background audio
+  m_EditorClassIdentifier: 
+  _audioClips:
+  - {fileID: 8300000, guid: 550456beb0d8ee842b7adcb418a6088e, type: 3}
+  - {fileID: 8300000, guid: 349bf91e012856f45b17782a85fc6042, type: 3}
+  - {fileID: 8300000, guid: 1bac035ac0c605140a1be46530ecb1ae, type: 3}
+  - {fileID: 8300000, guid: 398b4516d76447645825a10aa5fb9cb3, type: 3}
+  - {fileID: 8300000, guid: aa77d1736bfb9554cbdb5a1d3aa92ff6, type: 3}
+  - {fileID: 8300000, guid: e3dde20f872c09540a85e41b877392ad, type: 3}
+  - {fileID: 8300000, guid: 83c654fe97a46db4199b55d8ead1812c, type: 3}
+  - {fileID: 8300000, guid: 49d3608aac369564fbadc194000c168b, type: 3}
+  - {fileID: 8300000, guid: e7748ef1e0c77a142adb6a405498b983, type: 3}
+  - {fileID: 8300000, guid: 2b2dad93531e08649961eecfda55301d, type: 3}
+  _outputAudioGroup: {fileID: 5318718333726280678, guid: 0a7a5e93429c2d941ab1657d9d46bbca, type: 2}
+  _volume: {x: 1, y: 1}
+  _priority: 0
+  _spatialBlend: {x: 0, y: 0}
+  _pitch: {x: 0.9, y: 1.1}

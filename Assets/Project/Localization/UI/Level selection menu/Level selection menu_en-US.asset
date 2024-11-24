@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Level selection menu_en-US
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-US
+  m_SharedData: {fileID: 11400000, guid: caf59f499582c0b499d9c984a666ee59, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6471673996874350596
+  m_TableData:
+  - m_Id: 9687785472
+    m_Localized: Select level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123781242880
+    m_Localized: Level mastery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 229897134080
+    m_Localized: 'Damage: {DamageMastery * 100f:n2}%'
+    m_Metadata:
+      m_Items:
+      - rid: 6471673996874350596
+  - m_Id: 301586178048
+    m_Localized: 'Accuracy: {Accuracy * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 914512404480
+    m_Localized: 'Dodging: {DodgingMastery * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1004748660736
+    m_Localized: 'Meteors destroyed: {MeteorMastery * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1146381918208
+    m_Localized: 'Wrecks destroyed: {WreckMastery * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1265688895488
+    m_Localized: 'Mastery total: {MasteryTotal * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1346051760128
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401647259648
+    m_Localized: Battle!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548984770560
+    m_Localized: Best level run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348165336195072
+    m_Localized: 'Experience earned: {ExperienceMastery * 100f:n2}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2011257900097536
+    m_Localized: 'Best run: {UniversalDate}
+
+      Run time: {RunTime.TotalMinutes}:{RunTime.Seconds}:{RunTime.Milliseconds}
+
+      Level
+      mastery: {MasteryTotal * 100f:n2}%
+
+
+      Shots fired: {ShotsFired: SI()}
+
+      Hits:
+      {Hits: SI()}
+
+      Misses: {Misses: SI()}
+
+      Accuracy: {Accuracy * 100f:n2}%
+
+
+      Damage
+      output: {DamageOutput: SI()}
+
+      Damage dealt: {DamageDealt: SI()}
+
+      Damage
+      lost: {DamageLost: SI()}
+
+      Mastery: {DamageMastery * 100f:n2}%
+
+
+      Damage
+      input: {DamageInput: SI()}
+
+      Damage received: {DamageReceived: SI()}
+
+      Damage
+      avoided: {DamageAvoided: SI()}
+
+      Mastery: {DodgingMastery * 100f:n2}%
+
+
+      Meteors
+      encountered: {MeteorsEncountered: SI()}
+
+      Meteors destroyed: {MeteorsDestroyed:
+      SI()}
+
+      Meteors missed: {MeteorsMissed: MI()}
+
+      Mastery: {MeteorMastery
+      * 100f:n2}%
+
+
+      Wrecks encountered: {WrecksEncountered: SI()}
+
+      Wrecks
+      destroyed: {WrecksDestroyed: SI()}
+
+      Wrecks missed: {WrecksMissed: SI()}
+
+      Mastery:
+      {WreckMastery * 100f:n2}%
+
+
+      Experience total: {ExperienceTotal: SI()}
+
+      Experience
+      earned: {ExperienceEarned: SI()}
+
+      Experience lost: {ExperienceLost: SI()}
+
+      Mastery:
+      {ExperienceMastery * 100f:n2}
+
+
+      Credits earned: {CreditsEarned: SI()}
+
+
+      Durability
+      gained: {DurabilityGained: SI()}
+
+      Durability lost: {DurabilityLost: SI()}
+
+
+      Enemies
+      defeated: {EnemiesDefeated: SI()}
+
+      Bosses defeated: {BossesDefeated:
+      SI()}
+
+
+      Power-ups used: {PowerupsUsed: SI()}'
+    m_Metadata:
+      m_Items:
+      - rid: 6471673996874350596
+  references:
+    version: 2
+    RefIds:
+    - rid: 6471673996874350596
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 229897134080
+        - id: 2011257900097536

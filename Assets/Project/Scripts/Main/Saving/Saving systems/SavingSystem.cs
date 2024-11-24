@@ -7,7 +7,7 @@ namespace SpaceAce.Main.Saving
     public abstract class SavingSystem
     {
         public event EventHandler<StateSavedEventArgs> StateSaved;
-        public event EventHandler<StateLoadedEventArgs> StateLoaded, SetDefaultState;
+        public event EventHandler<StateLoadedEventArgs> StateLoaded;
 
         public event EventHandler<SavingFailedEventArgs> SavingFailed;
         public event EventHandler<LoadingFailedEventArgs> LoadingFailed;
@@ -25,7 +25,7 @@ namespace SpaceAce.Main.Saving
             Encryptor = encryptor ?? throw new ArgumentNullException();
         }
 
-        public void Register(ISavable entity, bool initialDefaultStateFallback)
+        public void Register(ISavable entity)
         {
             if (entity is null)
             {
@@ -34,25 +34,18 @@ namespace SpaceAce.Main.Saving
 
             if (_registeredEntities.Add(entity) == true)
             {
+                entity.SavingRequested += (_, _) => Save(entity);
+                entity.ErrorOccurred += (s, e) => LoadingFailed?.Invoke(s, new(entity.SavedDataName, e.Error));
+
                 try
                 {
-                    entity.SavingRequested += (_, _) => Save(entity);
-                    entity.ErrorOccurred += (s, e) => LoadingFailed?.Invoke(s, new(entity.SavedDataName, e.Error));
-                    
-                    if (TryLoad(entity, initialDefaultStateFallback) == true)
+                    if (TryLoad(entity) == true)
                     {
                         StateLoaded?.Invoke(this, new(entity.SavedDataName));
-                    }
-                    else if (initialDefaultStateFallback == true)
-                    {
-                        SetDefaultState?.Invoke(this, new(entity.SavedDataName));
                     }
                 }
                 catch (Exception ex)
                 {
-                    entity.SetDefaultState();
-
-                    SetDefaultState?.Invoke(this, new(entity.SavedDataName));
                     LoadingFailed?.Invoke(this, new(entity.SavedDataName, ex));
                 }
             }
@@ -67,11 +60,11 @@ namespace SpaceAce.Main.Saving
 
             if (_registeredEntities.Remove(entity) == true)
             {
+                entity.SavingRequested -= (_, _) => Save(entity);
+                entity.ErrorOccurred -= (s, e) => LoadingFailed?.Invoke(s, new(entity.SavedDataName, e.Error));
+
                 try
                 {
-                    entity.SavingRequested -= (_, _) => Save(entity);
-                    entity.ErrorOccurred -= (s, e) => LoadingFailed?.Invoke(s, new(entity.SavedDataName, e.Error));
-
                     Save(entity);
                     StateSaved?.Invoke(this, new(entity.SavedDataName));
                 }
@@ -85,6 +78,6 @@ namespace SpaceAce.Main.Saving
         protected abstract string GetSavedDataPath(string savedDataName);
 
         protected abstract void Save(ISavable entity);
-        protected abstract bool TryLoad(ISavable entity, bool defaultStateFallback);
+        protected abstract bool TryLoad(ISavable entity);
     }
 }

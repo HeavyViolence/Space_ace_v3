@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Menu-nameplate" src="project://database/Assets/Project/Prefabs/UI/Templates/Menu-nameplate.uxml?fileID=9197481963319205126&amp;guid=b640041e3bdf4744089b995373c19fc5&amp;type=3#Menu-nameplate" />
+    <ui:Template name="Button" src="project://database/Assets/Project/Prefabs/UI/Templates/Button.uxml?fileID=9197481963319205126&amp;guid=c865e0638474b9d44a6243887715d4b6&amp;type=3#Button" />
+    <ui:Template name="Progress-panel" src="project://database/Assets/Project/Prefabs/UI/Templates/Progress-panel.uxml?fileID=9197481963319205126&amp;guid=354c7f8f3a7ac984c85a2025d4991076&amp;type=3#Progress-panel" />
+    <ui:Template name="Named-panel" src="project://database/Assets/Project/Prefabs/UI/Templates/Text-panel.uxml?fileID=9197481963319205126&amp;guid=483e13f2ce71eba4aa6e1a931c6f42b2&amp;type=3#Text-panel" />
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:Instance template="Menu-nameplate" name="Menu-nameplate">
+            <AttributeOverrides element-name="Menu-name-label" text="Select level" />
+        </ui:Instance>
+        <ui:VisualElement name="Level-menu" style="flex-grow: 1; padding-top: 0; margin-top: 0; flex-direction: row; margin-right: 0; margin-left: 0; margin-bottom: 0;">
+            <ui:VisualElement name="Buttons" style="flex-grow: 1; width: 50%;">
+                <ui:VisualElement name="Level-buttons" style="flex-grow: 1; background-color: rgba(71, 69, 85, 0.38); border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; border-bottom-left-radius: 16px; margin-right: 8px; margin-left: 16px;">
+                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="AlwaysVisible" style="flex-shrink: 1; flex-grow: 1; flex-direction: column; flex-wrap: nowrap; align-self: auto; justify-content: flex-start; align-items: stretch;">
+                        <ui:VisualElement name="Level-buttons-anchor" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; margin-right: 8px; margin-left: 8px; margin-top: 8px; margin-bottom: 8px;" />
+                    </ui:ScrollView>
+                </ui:VisualElement>
+                <ui:VisualElement name="Navigation-buttons" style="flex-grow: 0; flex-shrink: 0; width: 100%; height: 96px; align-self: center; flex-direction: row; justify-content: space-around; align-items: center;">
+                    <ui:Instance template="Button" name="Back-button">
+                        <AttributeOverrides element-name="Button" text="Back" />
+                    </ui:Instance>
+                    <ui:Instance template="Button" name="Battle-button">
+                        <AttributeOverrides element-name="Button" text="Battle!" />
+                    </ui:Instance>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Level-info" style="flex-grow: 1; width: 50%; margin-right: 0; margin-left: 0; background-color: rgba(0, 0, 0, 0); border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; border-bottom-left-radius: 16px; margin-bottom: 0; margin-top: 0;">
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="AlwaysVisible" style="flex-shrink: 0; height: 100%; margin-bottom: 0; padding-bottom: 16px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; padding-right: 0; margin-right: 16px;">
+                    <ui:VisualElement name="Level-mastery-panel">
+                        <ui:VisualElement name="Base" style="flex-grow: 1; margin-top: 8px; margin-right: 8px; margin-bottom: 8px; margin-left: 8px;">
+                            <ui:Label tabindex="-1" text="Name content" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Name-label" style="-unity-text-align: middle-center; font-size: 24px; color: rgb(156, 156, 255); -unity-font: url(&quot;project://database/Assets/Project/Fonts/Noto%20serif%20regular/NotoSerif-Regular.ttf?fileID=12800000&amp;guid=cdca052ace5c2ea45a4982ded8ac7ba8&amp;type=3#NotoSerif-Regular&quot;); -unity-font-definition: initial; background-color: rgba(0, 0, 0, 0.38); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-left-radius: 16px; border-top-right-radius: 16px; -unity-font-style: normal;" />
+                            <ui:VisualElement name="Content-panel" focusable="false" style="flex-grow: 1; flex-direction: column; align-self: auto; justify-content: flex-start; align-items: stretch; background-color: rgba(71, 69, 85, 0.38); border-bottom-right-radius: 16px; border-bottom-left-radius: 16px; padding-top: 8px; margin-top: 0; padding-right: 8px; padding-bottom: 8px; padding-left: 8px;">
+                                <ui:Instance template="Progress-panel" name="Damage-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Accuracy-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Dodging-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Meteors-destroyed-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Wrecks-destroyed-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Experience-earned-progress-panel" />
+                                <ui:Instance template="Progress-panel" name="Mastery-total-progress-panel" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:Instance template="Named-panel" name="Level-statistics-panel" />
+                </ui:ScrollView>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

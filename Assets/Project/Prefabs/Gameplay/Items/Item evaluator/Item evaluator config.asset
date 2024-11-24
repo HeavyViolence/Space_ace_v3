@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf1b0285b70b9e48b736b7f07ff2df5, type: 3}
+  m_Name: Item evaluator config
+  m_EditorClassIdentifier: 
+  _probability: {fileID: 11400000, guid: 365152cfd265c6b4fba5d2e9980aaf26, type: 2}
+  _grade: {fileID: 11400000, guid: 0e809a63d87a96c44aee730783e3a647, type: 2}
+  _influence: {fileID: 11400000, guid: 3854344bbc46ca84c87165449c02e728, type: 2}
+  _gradeRange: {x: 0, y: 1400}
+  _gradeGap: 0.01
+  _tierColorCodes:
+  - serializedVersion: 2
+    rgba: 2634047999
+  - serializedVersion: 2
+    rgba: 2650734749
+  - serializedVersion: 2
+    rgba: 2640380159
+  - serializedVersion: 2
+    rgba: 2634088447
+  - serializedVersion: 2
+    rgba: 2650774784
+  - serializedVersion: 2
+    rgba: 2640445184
+  - serializedVersion: 2
+    rgba: 2650800127

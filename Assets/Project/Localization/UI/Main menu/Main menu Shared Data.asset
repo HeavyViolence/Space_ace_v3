@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Main menu Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Main menu
+  m_TableCollectionNameGuidString: 41a2407fa04287146971594db3647c92
+  m_Entries:
+  - m_Id: 69733441536
+    m_Key: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176012910592
+    m_Key: Inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 329444745216
+    m_Key: Armory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2223156224000
+    m_Key: Statistics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 391054876672
+    m_Key: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 323670642778112
+    m_Key: Saves
+    m_Metadata:
+      m_Items: []
+  - m_Id: 483832881152
+    m_Key: Commands
+    m_Metadata:
+      m_Items: []
+  - m_Id: 534076448768
+    m_Key: Info
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6471673838414856196
+  references:
+    version: 2
+    RefIds:
+    - rid: 6471673838414856196
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1730624224580

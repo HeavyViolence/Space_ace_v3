@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73fc02302c200d34583c2fd358342718, type: 3}
+  m_Name: UI audio
+  m_EditorClassIdentifier: 
+  _click: {fileID: 11400000, guid: a24e098d2395ed64ab7bde328de89f72, type: 2}
+  _specialClick: {fileID: 11400000, guid: fe5da957bd9cfb2498ffd878562ca532, type: 2}
+  _clickBack: {fileID: 11400000, guid: b906faa3cb220cc45915688d5d12ddc6, type: 2}
+  _switch: {fileID: 11400000, guid: ff106f748e0930a4d8651fcec3971dd6, type: 2}
+  _hoverOver: {fileID: 11400000, guid: 03fed46b6c8af8b4482d444de77360c5, type: 2}
+  _error: {fileID: 11400000, guid: cccb0ca0a7ab53944b62a271dd0909a3, type: 2}
+  _money: {fileID: 11400000, guid: 110aa463457bbf44a920903822823193, type: 2}
+  _unlocked: {fileID: 11400000, guid: 2b1c6bfc05ff2e84b861b79aa4a77533, type: 2}
+  _notification: {fileID: 11400000, guid: 7a285bf0812e7a54b997019ab11260f9, type: 2}
+  _win: {fileID: 11400000, guid: 49aa344cc1925b747a30841c872af82e, type: 2}
+  _lost: {fileID: 11400000, guid: efb6533e74c51784db6301436e2d371b, type: 2}

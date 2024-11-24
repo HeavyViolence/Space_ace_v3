@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Main menu_en-US
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-US
+  m_SharedData: {fileID: 11400000, guid: 41a2407fa04287146971594db3647c92, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 69733441536
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176012910592
+    m_Localized: Inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 329444745216
+    m_Localized: Armory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 391054876672
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 483832881152
+    m_Localized: Commands
+    m_Metadata:
+      m_Items: []
+  - m_Id: 534076448768
+    m_Localized: Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2223156224000
+    m_Localized: Statistics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 323670642778112
+    m_Localized: Saves
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

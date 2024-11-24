@@ -1,0 +1,71 @@
+.Button {
+    width: 256px;
+    height: 32px;
+    -unity-font: url("project://database/Assets/Project/Fonts/Noto%20serif%20regular/NotoSerif-Regular.ttf?fileID=12800000&guid=cdca052ace5c2ea45a4982ded8ac7ba8&type=3#NotoSerif-Regular");
+    -unity-font-definition: initial;
+    font-size: 24px;
+    -unity-text-align: middle-center;
+    color: rgb(156, 156, 255);
+    background-color: rgba(71, 69, 85, 0.62);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-right-width: 8px;
+    border-left-width: 8px;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-left-color: rgb(156, 156, 255);
+    border-right-color: rgb(156, 156, 255);
+    border-top-color: rgb(156, 156, 255);
+    border-bottom-color: rgb(156, 156, 255);
+    -unity-font-style: normal;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.2s;
+}
+
+.Button:hover {
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-right-width: 10px;
+    border-left-width: 10px;
+    border-left-color: rgb(255, 171, 144);
+    border-right-color: rgb(255, 171, 144);
+    border-top-color: rgb(255, 171, 144);
+    border-bottom-color: rgb(255, 171, 144);
+    font-size: 22px;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    color: rgb(255, 171, 144);
+    background-color: rgba(92, 64, 62, 0.62);
+    -unity-font: url("project://database/Assets/Project/Fonts/Noto%20serif%20regular/NotoSerif-Regular.ttf?fileID=12800000&guid=cdca052ace5c2ea45a4982ded8ac7ba8&type=3#NotoSerif-Regular");
+    -unity-font-definition: initial;
+    rotate: 0.5deg;
+}
+
+.Button:active {
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    -unity-font: url("project://database/Assets/Project/Fonts/Noto%20serif%20regular/NotoSerif-Regular.ttf?fileID=12800000&guid=cdca052ace5c2ea45a4982ded8ac7ba8&type=3#NotoSerif-Regular");
+    -unity-font-definition: initial;
+    color: rgb(255, 209, 110);
+    border-left-color: rgb(255, 209, 110);
+    border-right-color: rgb(255, 209, 110);
+    border-top-color: rgb(255, 209, 110);
+    border-bottom-color: rgb(255, 209, 110);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-right-width: 12px;
+    border-left-width: 12px;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    background-color: rgba(78, 70, 55, 0.62);
+    rotate: 1deg;
+}

@@ -260,7 +260,7 @@ namespace SpaceAce.Main.Audio
 
         public void Initialize()
         {
-            _savingSystem.Register(this, true);
+            _savingSystem.Register(this);
         }
 
         public void Dispose()
@@ -279,12 +279,10 @@ namespace SpaceAce.Main.Audio
             }
             catch (Exception ex)
             {
-                SetDefaultState();
+                _settings = AudioPlayerSettings.Default;
                 ErrorOccurred?.Invoke(this, new(ex));
             }
         }
-
-        public void SetDefaultState() => _settings = AudioPlayerSettings.Default;
 
         public override bool Equals(object obj) =>
             obj is not null && Equals(obj as ISavable);
