@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 
 using Newtonsoft.Json;
 
+using SpaceAce.Auxiliary.Easing;
 using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.GamePause;
 using SpaceAce.Main.Saving;
@@ -28,6 +29,7 @@ namespace SpaceAce.Main.Audio
         private readonly AudioMixer _audioMixer;
         private readonly SavingSystem _savingSystem;
         private readonly GamePauser _gamePauser;
+        private readonly EasingService _easingService;
 
         private readonly Transform _audioSourcesAnchor = new GameObject("Audio sources anchor").transform;
         private readonly Dictionary<Guid, AudioSourceCache> _activeAudioSources;
@@ -51,25 +53,30 @@ namespace SpaceAce.Main.Audio
 
                 _settings = value;
 
-                _audioMixer.SetFloat("Master volume", value.MasterVolume);
-                _audioMixer.SetFloat("Shooting volume", value.ShootingVolume);
-                _audioMixer.SetFloat("Explosions volume", value.ExplosionsVolume);
-                _audioMixer.SetFloat("Background volume", value.BackgroundVolume);
-                _audioMixer.SetFloat("Interface volume", value.InterfaceVolume);
-                _audioMixer.SetFloat("Music volume", value.MusicVolume);
-                _audioMixer.SetFloat("Interactions volume", value.InteractionsVolume);
-                _audioMixer.SetFloat("Notifications volume", value.NotificationsVolume);
+                _audioMixer.SetFloat("Master volumeFactor", value.MasterVolume);
+                _audioMixer.SetFloat("Shooting volumeFactor", value.ShootingVolume);
+                _audioMixer.SetFloat("Explosions volumeFactor", value.ExplosionsVolume);
+                _audioMixer.SetFloat("Background volumeFactor", value.BackgroundVolume);
+                _audioMixer.SetFloat("Interface volumeFactor", value.InterfaceVolume);
+                _audioMixer.SetFloat("Music volumeFactor", value.MusicVolume);
+                _audioMixer.SetFloat("Interactions volumeFactor", value.InteractionsVolume);
+                _audioMixer.SetFloat("Notifications volumeFactor", value.NotificationsVolume);
 
                 SavingRequested?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public AudioPlayer(int audioSources, AudioMixer mixer, SavingSystem savingSystem, GamePauser gamePauser)
+        public AudioPlayer(int audioSources,
+                           AudioMixer mixer,
+                           SavingSystem savingSystem,
+                           GamePauser gamePauser,
+                           EasingService easingService)
         {
             AudioSources = Mathf.Clamp(audioSources, MinAudioSources, MaxAudioSources);
             _audioMixer = mixer == null ? throw new ArgumentNullException() : mixer;
             _savingSystem = savingSystem ?? throw new ArgumentNullException();
             _gamePauser = gamePauser ?? throw new ArgumentNullException();
+            _easingService = easingService ?? throw new ArgumentNullException();
 
             _activeAudioSources = new(AudioSources);
             _availableAudioSources = new(AudioSources);
@@ -93,21 +100,43 @@ namespace SpaceAce.Main.Audio
             {
                 if (token.IsCancellationRequested == true)
                 {
+                    if (properties.CancelWithEasing == true)
+                    {
+                        float cancellationTimer = 0f;
+                        float initialVolume = cache.AudioSource.volume;
+
+                        while (cancellationTimer < properties.CancellationDuration)
+                        {
+                            cancellationTimer += Time.deltaTime;
+                            float t = cancellationTimer / properties.CancellationDuration;
+                            float volumeFactor = _easingService.Ease(1f, 0f, t, properties.CancellationEasing);
+                            float volume = initialVolume * volumeFactor;
+
+                            cache.AudioSource.volume = volume;
+
+                            await UniTask.Yield();
+                        }
+                    }
+
                     break;
                 }
-
-                timer += Time.deltaTime;
 
                 if (obeyGamePause == true && _gamePauser.Paused == true)
                 {
                     cache.AudioSource.Pause();
-
-                    while (_gamePauser.Paused == true)
-                    {
-                        await UniTask.Yield();
-                    }
-
+                    await UniTask.WaitUntil(() => _gamePauser.Paused == false, PlayerLoopTiming.Update, token);
                     cache.AudioSource.Play();
+                }
+
+                timer += Time.deltaTime;
+
+                if (properties.PlayWithEasing == true && cache.AudioSource != null)
+                {
+                    float t = timer / access.PlaybackDuration;
+                    float volumeFactor = _easingService.Ease(0f, 1f, t, EasingMode.FlatFastInOut);
+                    float volume = properties.Volume * volumeFactor;
+
+                    cache.AudioSource.volume = volume;
                 }
 
                 await UniTask.Yield();
@@ -244,7 +273,7 @@ namespace SpaceAce.Main.Audio
             else
             {
                 cache.AudioSource.loop = false;
-                access = new AudioAccess(id, properties.Clip.length);
+                access = new AudioAccess(id, properties.Clip.length * properties.Pitch);
             }
 
             cache.Transform.localPosition = position;

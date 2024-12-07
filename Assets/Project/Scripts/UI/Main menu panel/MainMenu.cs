@@ -25,9 +25,8 @@ namespace SpaceAce.UI
 
         private Button _play, _inventory, _armory, _settings, _statistics, _saves, _commands, _info;
 
-        public MainMenu(VisualTreeAsset asset,
-                        PanelSettings settings,
-                        UIServices services) : base(asset, settings, services) { }
+        public MainMenu(VisualTreeAsset asset, PanelSettings settings, UIServices services)
+            : base(asset, settings, services) { }
 
         protected override void OnBind()
         {

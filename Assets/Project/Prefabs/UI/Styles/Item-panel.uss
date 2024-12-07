@@ -1,0 +1,39 @@
+.Item-panel {
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(0, 0, 0, 0.38);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left-color: rgb(255, 97, 0);
+    border-right-color: rgb(255, 97, 0);
+    border-top-color: rgb(255, 97, 0);
+    border-bottom-color: rgb(255, 97, 0);
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+.Item-panel:hover {
+    scale: 0.97 0.97;
+    rotate: 1deg;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+.Item-panel:focus {
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    scale: 0.95 0.95;
+    rotate: 2deg;
+}

@@ -27,6 +27,16 @@ namespace SpaceAce.Gameplay.Levels
             _levelCompleter = levelCompleter ?? throw new ArgumentNullException();
         }
 
+        public LevelRewardBundle GetReward(int level)
+        {
+            if (level <= 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return _config.GetReward(level, CreditsReward.Value, ExperienceReward.Value);
+        }
+
         #region interfaces
 
         public void Initialize()
@@ -51,8 +61,8 @@ namespace SpaceAce.Gameplay.Levels
 
         private void LevelLoadingStartedEventHandler(object sender, LevelLoadingStartedEventArgs e)
         {
-            CreditsReward.Value = _config.GetCreditsReward(e.Level);
-            ExperienceReward.Value = _config.GetExperienceReward(e.Level);
+            CreditsReward.Value = 0f;
+            ExperienceReward.Value = 0f;
         }
 
         private void MainMenuLoadedEventHandler(object sender, EventArgs e)

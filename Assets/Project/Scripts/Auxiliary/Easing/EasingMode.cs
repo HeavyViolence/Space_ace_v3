@@ -2,9 +2,13 @@ namespace SpaceAce.Auxiliary.Easing
 {
     public enum EasingMode
     {
-        Slow,
-        Fast,
-        Smooth,
-        Vawy
+        RiseSlow,
+        RiseFast,
+        RiseSmooth,
+        RiseWavy,
+        Bell,
+        BellSmooth,
+        FlatFastInOut,
+        FlatSmoothInOut
     }
 }

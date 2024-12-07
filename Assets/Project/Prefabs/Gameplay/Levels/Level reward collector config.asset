@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1723166c178f449b6b5f574f83fb2a, type: 3}
   m_Name: Level reward collector config
   m_EditorClassIdentifier: 
-  _firstLevelCreditsReward: 500
-  _nextLevelCreditsRewardIncrease: 300
-  _firstLevelExperienceReward: 1000
-  _nextLevelExperienceRewardFactor: 1.2
+  _levelCompletionReward: {fileID: 11400000, guid: 7fe21ffa09a691e4eaf3902b5e5166b9, type: 2}
+  _levelMasteryReward: {fileID: 11400000, guid: 18c28db0c3edbce408a87a78c7510afd, type: 2}
+  _levelExcellenceReward: {fileID: 11400000, guid: 93377ac8141996e42aacf6f73e061e88, type: 2}

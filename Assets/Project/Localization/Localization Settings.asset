@@ -33,6 +33,13 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1499714211494494210
+      type: {class: SIFormatter, ns: SpaceAce.Main.Localization, asm: Scripts}
+      data:
+        m_Names:
+        - SI
+        - Si
+        - si
     - rid: 1688061108017168384
       type: {class: CommandLineLocaleSelector, ns: UnityEngine.Localization.Settings, asm: Unity.Localization}
       data:
@@ -93,6 +100,7 @@ MonoBehaviour:
         - rid: 1688061108017168393
         - rid: 1688061108017168400
         - rid: 1688061108017168401
+        - rid: 1499714211494494210
         - rid: 1688061108017168402
         - rid: 1688061108017168403
         - rid: 1688061108017168404

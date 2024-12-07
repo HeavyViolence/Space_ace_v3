@@ -19,16 +19,16 @@ MonoBehaviour:
   _gradeGap: 0.01
   _tierColorCodes:
   - serializedVersion: 2
-    rgba: 2634047999
+    rgba: 4278215167
   - serializedVersion: 2
-    rgba: 2650734749
+    rgba: 4294901917
   - serializedVersion: 2
-    rgba: 2640380159
+    rgba: 4284547327
   - serializedVersion: 2
-    rgba: 2634088447
+    rgba: 4278255615
   - serializedVersion: 2
-    rgba: 2650774784
+    rgba: 4294941952
   - serializedVersion: 2
-    rgba: 2640445184
+    rgba: 4284612352
   - serializedVersion: 2
-    rgba: 2650800127
+    rgba: 4294967295

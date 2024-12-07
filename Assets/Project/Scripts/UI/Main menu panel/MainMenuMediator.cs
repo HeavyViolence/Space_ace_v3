@@ -16,11 +16,6 @@ namespace SpaceAce.UI
             Panels.MainMenu.EnableAsync().Forget();
         }
 
-        protected override void OnDispose()
-        {
-
-        }
-
         protected override void OnPanelEnabled()
         {
             Panels.MainMenu.PlayButtonClicked += PlayButtonClickedEventHandler;
@@ -47,20 +42,13 @@ namespace SpaceAce.UI
             Panels.MainMenu.HoveredOverButton -= HoveredOverButtonEventHandler;
         }
 
-        protected override void OnPanelLock()
-        {
-
-        }
-
-        protected override void OnPanelUnlock()
-        {
-
-        }
-
         #region event handlers
 
         private void PlayButtonClickedEventHandler(object sender, EventArgs e)
         {
+            Panels.MainMenu.Disable();
+            Panels.LevelSelectionMenu.EnableAsync().Forget();
+
             OnButtonClicked();
         }
 

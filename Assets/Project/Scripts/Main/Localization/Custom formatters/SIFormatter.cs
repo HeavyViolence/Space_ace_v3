@@ -19,77 +19,83 @@ namespace SpaceAce.Main.Localization
 
             if (info.CurrentValue is float f)
             {
+                if (f == 0f)
+                {
+                    info.Write("0");
+                    return true;
+                }
+
                 if (f == float.PositiveInfinity)
                 {
                     info.Write("Inf");
                     return true;
                 }
 
-                if (f >= 0f)
+                if (f > 0f)
                 {
                     if (f < 1f)
                     {
                         if (f > 1e-3f)
                         {
-                            info.Write($"{f: n2}");
+                            info.Write($"{f:n2}");
                             return true;
                         }
 
                         if (f > 1e-6f)
                         {
-                            info.Write($"{f / 1e-3f: n2}m");
+                            info.Write($"{f / 1e-3f:n2}m");
                             return true;
                         }
 
                         if (f > 1e-9f)
                         {
-                            info.Write($"{f / 1e-6f: n2}\u03bc");
+                            info.Write($"{f / 1e-6f:n2}\u03bc");
                             return true;
                         }
 
                         if (f > 1e-12f)
                         {
-                            info.Write($"{f / 1e-9f: n2}n");
+                            info.Write($"{f / 1e-9f:n2}n");
                             return true;
                         }
 
                         if (f > 1e-15f)
                         {
-                            info.Write($"{f / 1e-12f: n2}p");
+                            info.Write($"{f / 1e-12f:n2}p");
                             return true;
                         }
 
                         if (f > 1e-18f)
                         {
-                            info.Write($"{f / 1e-15f: n2}f");
+                            info.Write($"{f / 1e-15f:n2}f");
                             return true;
                         }
 
                         if (f > 1e-21f)
                         {
-                            info.Write($"{f / 1e-18f: n2}a");
+                            info.Write($"{f / 1e-18f:n2}a");
                             return true;
                         }
 
                         if (f > 1e-24f)
                         {
-                            info.Write($"{f / 1e-21f: n2}z");
+                            info.Write($"{f / 1e-21f:n2}z");
                             return true;
                         }
 
                         if (f > 1e-27f)
                         {
-                            info.Write($"{f / 1e-24f: n2}y");
+                            info.Write($"{f / 1e-24f:n2}y");
                             return true;
                         }
 
                         if (f > 1e-30f)
                         {
-                            info.Write($"{f / 1e-27f: n2}r");
+                            info.Write($"{f / 1e-27f:n2}r");
                             return true;
                         }
 
-                        info.Write($"{f / 1e-30f: n2}q");
+                        info.Write($"{f / 1e-30f:n2}q");
                         return true;
                     }
 
@@ -97,65 +103,65 @@ namespace SpaceAce.Main.Localization
                     {
                         if (f < 1e+3f)
                         {
-                            info.Write($"{f: n2}");
+                            info.Write($"{f:n2}");
                             return true;
                         }
 
                         if (f < 1e+6f)
                         {
-                            info.Write($"{f / 1e+3f: n2}k");
+                            info.Write($"{f / 1e+3f:n2}k");
                             return true;
                         }
 
                         if (f < 1e9f)
                         {
-                            info.Write($"{f / 1e+6f: n2}M");
+                            info.Write($"{f / 1e+6f:n2}M");
                             return true;
                         }
 
                         if (f < 1e+12f)
                         {
-                            info.Write($"{f / 1e+9f: n2}G");
+                            info.Write($"{f / 1e+9f:n2}G");
                             return true;
                         }
 
                         if (f < 1e+15f)
                         {
-                            info.Write($"{f / 1e+12f: n2}T");
+                            info.Write($"{f / 1e+12f:n2}T");
                             return true;
                         }
 
                         if (f < 1e+18f)
                         {
-                            info.Write($"{f / 1e+15f: n2}P");
+                            info.Write($"{f / 1e+15f:n2}P");
                             return true;
                         }
 
                         if (f < 1e+21f)
                         {
-                            info.Write($"{f / 1e+18f: n2}E");
+                            info.Write($"{f / 1e+18f:n2}E");
                             return true;
                         }
 
                         if (f < 1e+24f)
                         {
-                            info.Write($"{f / 1e+21f: n2}Z");
+                            info.Write($"{f / 1e+21f:n2}Z");
                             return true;
                         }
 
                         if (f < 1e+27f)
                         {
-                            info.Write($"{f / 1e+24f: n2}Y");
+                            info.Write($"{f / 1e+24f:n2}Y");
                             return true;
                         }
 
                         if (f < 1e+30f)
                         {
-                            info.Write($"{f / 1e+27f: n2}R");
+                            info.Write($"{f / 1e+27f:n2}R");
                             return true;
                         }
 
-                        info.Write($"{f / 1e+30f: n2}Q");
+                        info.Write($"{f / 1e+30f:n2}Q");
                         return true;
                     }
                 }
@@ -181,17 +187,17 @@ namespace SpaceAce.Main.Localization
 
                     if (i < 1_000_000)
                     {
-                        info.Write($"{i / 1e+3f: n2}k");
+                        info.Write($"{i / 1e+3f:n2}k");
                         return true;
                     }
 
                     if (i < 1_000_000_000)
                     {
-                        info.Write($"{i / 1e+6f: n2}M");
+                        info.Write($"{i / 1e+6f:n2}M");
                         return true;
                     }
 
-                    info.Write($"{i / 1e+9f: n2}G");
+                    info.Write($"{i / 1e+9f:n2}G");
                     return true;
                 }
 

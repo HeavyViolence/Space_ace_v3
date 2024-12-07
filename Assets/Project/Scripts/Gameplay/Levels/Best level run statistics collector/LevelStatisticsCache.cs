@@ -28,7 +28,7 @@ namespace SpaceAce.Gameplay.Levels
         public float DurabilityLost { get; set; }
 
         public int EnemiesDefeated { get; set; }
-        public int PowerupsUsed { get; set; }
+        public int ItemsUsed { get; set; }
 
         public readonly LevelStatistics GetSnapshot(TimeSpan runTime) =>
             new(this, DateTime.UtcNow, runTime);
@@ -59,7 +59,7 @@ namespace SpaceAce.Gameplay.Levels
             DurabilityLost = 0f;
 
             EnemiesDefeated = 0;
-            PowerupsUsed = 0;
+            ItemsUsed = 0;
         }
     }
 }

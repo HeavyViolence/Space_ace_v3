@@ -21,6 +21,9 @@ namespace SpaceAce.Gameplay.Levels
         [JsonIgnore]
         public float Accuracy => ShotsFired == 0 ? 0f : (float)Hits / ShotsFired;
 
+        [JsonIgnore]
+        public float AccuracyPercent => Accuracy * 100f;
+
         public float DamageDealt { get; }
         public float DamageLost { get; }
 
@@ -31,6 +34,9 @@ namespace SpaceAce.Gameplay.Levels
         public float DamageMastery =>
             DamageDealt == 0f ? 0f : DamageDealt / DamageOutput;
 
+        [JsonIgnore]
+        public float DamageMasteryPercent => DamageMastery * 100f;
+
         public float DamageReceived { get; }
         public float DamageAvoided { get; }
 
@@ -40,6 +46,9 @@ namespace SpaceAce.Gameplay.Levels
         [JsonIgnore]
         public float DodgingMastery =>
             DamageReceived == 0f ? 1f : 1f - (DamageReceived - DamageAvoided) / DamageReceived;
+
+        [JsonIgnore]
+        public float DodgingMasteryPercent => DodgingMastery * 100f;
 
         public int MeteorsEncountered { get; }
         public int MeteorsDestroyed { get; }
@@ -52,6 +61,9 @@ namespace SpaceAce.Gameplay.Levels
         public float MeteorMastery =>
             MeteorsEncountered == 0 ? 1f : (float)MeteorsDestroyed / MeteorsEncountered;
 
+        [JsonIgnore]
+        public float MeteorMasteryPercent => MeteorMastery * 100f;
+
         public int WrecksEncountered { get; }
         public int WrecksDestroyed { get; }
 
@@ -62,6 +74,9 @@ namespace SpaceAce.Gameplay.Levels
         [JsonIgnore]
         public float WreckMastery =>
             WrecksEncountered == 0 ? 1f : (float)WrecksDestroyed / WrecksEncountered;
+
+        [JsonIgnore]
+        public float WreckMasteryPercent => WreckMastery * 100f;
 
         public float ExperienceEarned { get; }
         public float ExperienceLost { get; }
@@ -74,8 +89,14 @@ namespace SpaceAce.Gameplay.Levels
             ExperienceEarned == 0f ? 0f : (ExperienceEarned - ExperienceLost) / ExperienceEarned;
 
         [JsonIgnore]
+        public float ExperienceMasteryPercent => ExperienceMastery * 100f;
+
+        [JsonIgnore]
         public float MasteryTotal =>
             Accuracy * DamageMastery * DodgingMastery * MeteorMastery * WreckMastery * ExperienceMastery;
+
+        [JsonIgnore]
+        public float MasteryTotalPercent => MasteryTotal * 100f;
 
         public float CreditsEarned { get; }
 
@@ -85,13 +106,10 @@ namespace SpaceAce.Gameplay.Levels
         public int EnemiesDefeated { get; }
         public int BossesDefeated { get; }
 
-        public int PowerupsUsed { get; }
+        public int ItemsUsed { get; }
 
         public DateTime Date { get; }
         public TimeSpan RunTime { get; }
-
-        [JsonIgnore]
-        public string UniversalDate => Date.ToString("U");
 
         public LevelStatistics(int shotsFired,
                                int hits,
@@ -110,7 +128,7 @@ namespace SpaceAce.Gameplay.Levels
                                float durabilityLost,
                                int enemiesDefeated,
                                int bossesDefeated,
-                               int powerupsUsed,
+                               int itemsUsed,
                                DateTime date,
                                TimeSpan runTime)
         {
@@ -142,7 +160,7 @@ namespace SpaceAce.Gameplay.Levels
             EnemiesDefeated = Mathf.Clamp(enemiesDefeated, 0, int.MaxValue);
             BossesDefeated = Mathf.Clamp(bossesDefeated, 0, int.MaxValue);
 
-            PowerupsUsed = Mathf.Clamp(powerupsUsed, 0, int.MaxValue);
+            ItemsUsed = Mathf.Clamp(itemsUsed, 0, int.MaxValue);
 
             Date = date;
         }
@@ -173,7 +191,7 @@ namespace SpaceAce.Gameplay.Levels
             DurabilityGained = Mathf.Clamp(cache.DurabilityGained, 0f, float.MaxValue);
 
             EnemiesDefeated = Mathf.Clamp(cache.EnemiesDefeated, 0, int.MaxValue);
-            PowerupsUsed = Mathf.Clamp(cache.PowerupsUsed, 0, int.MaxValue);
+            ItemsUsed = Mathf.Clamp(cache.ItemsUsed, 0, int.MaxValue);
 
             Date = date;
             RunTime = runTime;

@@ -21,15 +21,6 @@ namespace SpaceAce.UI
             Services = services ?? throw new ArgumentNullException();
         }
 
-        protected abstract void OnInitialize();
-        protected abstract void OnDispose();
-
-        protected abstract void OnPanelEnabled();
-        protected abstract void OnPanelDisabled();
-
-        protected abstract void OnPanelLock();
-        protected abstract void OnPanelUnlock();
-
         protected void OnButtonClicked()
         {
             AudioProperties audio = Services.UIAudio.Click.Random;
@@ -49,8 +40,8 @@ namespace SpaceAce.UI
             Target.Enabled += (_, _) => OnPanelEnabled();
             Target.Disabled += (_, _) => OnPanelDisabled();
 
-            Target.Locked += (_, _) => OnPanelLock();
-            Target.Unlocked += (_, _) => OnPanelUnlock();
+            Target.Locked += (_, _) => OnPanelLocked();
+            Target.Unlocked += (_, _) => OnPanelUnlocked();
 
             OnInitialize();
         }
@@ -60,12 +51,21 @@ namespace SpaceAce.UI
             Target.Enabled -= (_, _) => OnPanelEnabled();
             Target.Disabled -= (_, _) => OnPanelDisabled();
 
-            Target.Locked -= (_, _) => OnPanelLock();
-            Target.Unlocked -= (_, _) => OnPanelUnlock();
+            Target.Locked -= (_, _) => OnPanelLocked();
+            Target.Unlocked -= (_, _) => OnPanelUnlocked();
 
             OnDispose();
         }
 
         #endregion
+
+        protected virtual void OnInitialize() { }
+        protected virtual void OnDispose() { }
+
+        protected virtual void OnPanelEnabled() { }
+        protected virtual void OnPanelDisabled() { }
+
+        protected virtual void OnPanelLocked() { }
+        protected virtual void OnPanelUnlocked() { }
     }
 }

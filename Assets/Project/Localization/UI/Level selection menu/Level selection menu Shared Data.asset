@@ -28,7 +28,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 301586178048
-    m_Key: Accuracy mastery
+    m_Key: Accuracy
     m_Metadata:
       m_Items: []
   - m_Id: 914512404480
@@ -52,11 +52,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1548984770560
-    m_Key: Best level run
+    m_Key: Level statistics header
     m_Metadata:
       m_Items: []
   - m_Id: 2011257900097536
-    m_Key: Best level run statistics
+    m_Key: Level statistics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11776705755602944
+    m_Key: Empty level statistics
     m_Metadata:
       m_Items: []
   - m_Id: 1346051760128
@@ -65,6 +69,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1401647259648
     m_Key: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736156362039296
+    m_Key: Level completion reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736297789775872
+    m_Key: Level mastery reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736456770674688
+    m_Key: Level excellence reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9752004954939392
+    m_Key: Level credits and experience reward
     m_Metadata:
       m_Items: []
   m_Metadata:

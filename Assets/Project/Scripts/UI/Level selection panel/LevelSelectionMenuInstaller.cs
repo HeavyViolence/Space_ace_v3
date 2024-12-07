@@ -5,8 +5,7 @@ using Zenject;
 
 namespace SpaceAce.UI
 {
-    public abstract class UIPanelInstaller<T1, T2> : MonoInstaller where T1 : UIPanel
-                                                                   where T2 : UIPanelMediator
+    public sealed class LevelSelectionMenuInstaller : MonoInstaller
     {
         [SerializeField]
         private VisualTreeAsset _panel;
@@ -14,14 +13,17 @@ namespace SpaceAce.UI
         [SerializeField]
         private PanelSettings _settings;
 
+        [SerializeField]
+        private LevelSelectionMenuConfig _config;
+
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<T1>()
+            Container.BindInterfacesAndSelfTo<LevelSelectionMenu>()
                      .AsSingle()
-                     .WithArguments(_panel, _settings)
+                     .WithArguments(_panel, _settings, _config)
                      .NonLazy();
 
-            Container.BindInterfacesAndSelfTo<T2>()
+            Container.BindInterfacesAndSelfTo<LevelSelectionMenuMediator>()
                      .AsSingle()
                      .NonLazy();
         }

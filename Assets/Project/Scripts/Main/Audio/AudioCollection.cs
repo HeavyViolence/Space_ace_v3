@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 
 using SpaceAce.Auxiliary;
-
+using SpaceAce.Auxiliary.Easing;
 using System.Collections.Generic;
 
 using UnityEditor;
@@ -27,6 +27,9 @@ namespace SpaceAce.Main.Audio
         public const float MaxPitch = 2f;
         public const float DefaultPitch = 1f;
 
+        public const float MinCancellationDuration = 0f;
+        public const float MaxCancellationDuration = 10f;
+
         private int _nextAudioClipIndex = 0;
         private IEnumerator<AudioClip> _shuffledAudio = null;
 
@@ -48,6 +51,18 @@ namespace SpaceAce.Main.Audio
         [SerializeField, MinMaxSlider(MinPitch, MaxPitch)]
         private Vector2 _pitch = new(MinPitch, MaxPitch);
 
+        [SerializeField]
+        private bool _playWithEasing = false;
+
+        [SerializeField]
+        private bool _cancelWithEasing = false;
+
+        [SerializeField, Range(MinCancellationDuration, MaxCancellationDuration), EnableIf("_cancelWithEasing")]
+        private float _cancellationDuartion = MinCancellationDuration;
+
+        [SerializeField]
+        private EasingMode _cancellationEasing;
+
         public int AudioClipsAmount => _audioClips.Count;
 
         public AudioProperties Next => new(NextAudio,
@@ -55,21 +70,33 @@ namespace SpaceAce.Main.Audio
                                            RandomVolume,
                                            _priority,
                                            RandomSpatialBlend,
-                                           RandomPitch);
+                                           RandomPitch,
+                                           _playWithEasing,
+                                           _cancelWithEasing,
+                                           _cancellationDuartion,
+                                           _cancellationEasing);
 
         public AudioProperties Random => new(RandomAudio,
                                              _outputAudioGroup,
                                              RandomVolume,
                                              _priority,
                                              RandomSpatialBlend,
-                                             RandomPitch);
+                                             RandomPitch,
+                                             _playWithEasing,
+                                             _cancelWithEasing,
+                                             _cancellationDuartion,
+                                             _cancellationEasing);
 
         public AudioProperties NonRepeatingRandom => new(ShuffledAudio,
                                                          _outputAudioGroup,
                                                          RandomVolume,
                                                          _priority,
                                                          RandomSpatialBlend,
-                                                         RandomPitch);
+                                                         RandomPitch,
+                                                         _playWithEasing,
+                                                         _cancelWithEasing,
+                                                         _cancellationDuartion,
+                                                         _cancellationEasing);
 
         private float RandomVolume => UnityEngine.Random.Range(_volume.x, _volume.y);
 

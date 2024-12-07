@@ -73,10 +73,12 @@ namespace SpaceAce.UI
 
         public void Lock()
         {
-            if (IsLocked == true)
+            if (Active == false || (Active == true && IsLocked == true))
             {
                 return;
             }
+
+            Document.rootVisualElement.style.opacity = 0.5f;
 
             IsLocked = true;
             Locked?.Invoke(this, EventArgs.Empty);
@@ -84,10 +86,12 @@ namespace SpaceAce.UI
 
         public void Unlock()
         {
-            if (IsLocked == false)
+            if (Active == false || (Active == true && IsLocked == false))
             {
                 return;
             }
+
+            Document.rootVisualElement.style.opacity = 1f;
 
             IsLocked = false;
             Unlocked?.Invoke(this, EventArgs.Empty);

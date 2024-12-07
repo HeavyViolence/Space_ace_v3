@@ -28,28 +28,28 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 229897134080
-    m_Localized: 'Damage: {DamageMastery * 100f:n2}%'
+    m_Localized: 'Damage mastery: {0:n2}%'
     m_Metadata:
       m_Items:
       - rid: 6471673996874350596
   - m_Id: 301586178048
-    m_Localized: 'Accuracy: {Accuracy * 100f:n2}%'
+    m_Localized: 'Accuracy: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 914512404480
-    m_Localized: 'Dodging: {DodgingMastery * 100f:n2}%'
+    m_Localized: 'Dodging mastery: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 1004748660736
-    m_Localized: 'Meteors destroyed: {MeteorMastery * 100f:n2}%'
+    m_Localized: 'Meteors destroyed: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 1146381918208
-    m_Localized: 'Wrecks destroyed: {WreckMastery * 100f:n2}%'
+    m_Localized: 'Wrecks destroyed: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 1265688895488
-    m_Localized: 'Mastery total: {MasteryTotal * 100f:n2}%'
+    m_Localized: 'Mastery total: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 1346051760128
@@ -65,104 +65,133 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 348165336195072
-    m_Localized: 'Experience earned: {ExperienceMastery * 100f:n2}%'
+    m_Localized: 'Experience earned: {0:n2}%'
     m_Metadata:
       m_Items: []
   - m_Id: 2011257900097536
-    m_Localized: 'Best run: {UniversalDate}
+    m_Localized: 'Date: {Date}
 
-      Run time: {RunTime.TotalMinutes}:{RunTime.Seconds}:{RunTime.Milliseconds}
+      Run time: {RunTime}
 
-      Level
-      mastery: {MasteryTotal * 100f:n2}%
-
-
-      Shots fired: {ShotsFired: SI()}
-
-      Hits:
-      {Hits: SI()}
-
-      Misses: {Misses: SI()}
-
-      Accuracy: {Accuracy * 100f:n2}%
+      Level mastery: {MasteryTotalPercent:n2}%
 
 
-      Damage
-      output: {DamageOutput: SI()}
+      Shots
+      fired: {ShotsFired:SI()}
 
-      Damage dealt: {DamageDealt: SI()}
+      Hits: {Hits:SI()}
+
+      Misses: {Misses:SI()}
+
+      Accuracy:
+      {AccuracyPercent:n2}%
+
+
+
+      Damage output: {DamageOutput:SI()}
 
       Damage
-      lost: {DamageLost: SI()}
+      dealt: {DamageDealt:SI()}
 
-      Mastery: {DamageMastery * 100f:n2}%
+      Damage lost: {DamageLost:SI()}
 
+      Mastery:
+      {DamageMasteryPercent:n2}%
+
+
+
+      Damage input: {DamageInput:SI()}
 
       Damage
-      input: {DamageInput: SI()}
+      received: {DamageReceived:SI()}
 
-      Damage received: {DamageReceived: SI()}
+      Damage avoided: {DamageAvoided:SI()}
 
-      Damage
-      avoided: {DamageAvoided: SI()}
+      Mastery:
+      {DodgingMasteryPercent:n2}%
 
-      Mastery: {DodgingMastery * 100f:n2}%
 
+
+      Meteors encountered: {MeteorsEncountered:SI()}
 
       Meteors
-      encountered: {MeteorsEncountered: SI()}
+      destroyed: {MeteorsDestroyed:SI()}
 
-      Meteors destroyed: {MeteorsDestroyed:
-      SI()}
+      Meteors missed: {MeteorsMissed:SI()}
 
-      Meteors missed: {MeteorsMissed: MI()}
-
-      Mastery: {MeteorMastery
-      * 100f:n2}%
+      Mastery:
+      {MeteorMasteryPercent:n2}%
 
 
-      Wrecks encountered: {WrecksEncountered: SI()}
+
+      Wrecks encountered: {WrecksEncountered:SI()}
 
       Wrecks
-      destroyed: {WrecksDestroyed: SI()}
+      destroyed: {WrecksDestroyed:SI()}
 
-      Wrecks missed: {WrecksMissed: SI()}
+      Wrecks missed: {WrecksMissed:SI()}
 
       Mastery:
-      {WreckMastery * 100f:n2}%
+      {WreckMasteryPercent:n2}%
 
 
-      Experience total: {ExperienceTotal: SI()}
+
+      Experience total: {ExperienceTotal:SI()}
 
       Experience
-      earned: {ExperienceEarned: SI()}
+      earned: {ExperienceEarned:SI()}
 
-      Experience lost: {ExperienceLost: SI()}
+      Experience lost: {ExperienceLost:SI()}
 
       Mastery:
-      {ExperienceMastery * 100f:n2}
+      {ExperienceMasteryPercent:n2}%
 
 
-      Credits earned: {CreditsEarned: SI()}
+
+      Credits earned: {CreditsEarned:SI()}
+
 
 
       Durability
-      gained: {DurabilityGained: SI()}
+      gained: {DurabilityGained:SI()}
 
-      Durability lost: {DurabilityLost: SI()}
+      Durability lost: {DurabilityLost:SI()}
+
 
 
       Enemies
-      defeated: {EnemiesDefeated: SI()}
+      defeated: {EnemiesDefeated:SI()}
 
-      Bosses defeated: {BossesDefeated:
-      SI()}
+      Bosses defeated: {BossesDefeated:SI()}
 
 
-      Power-ups used: {PowerupsUsed: SI()}'
+
+      Items
+      used: {ItemsUsed:SI()}'
     m_Metadata:
       m_Items:
       - rid: 6471673996874350596
+  - m_Id: 9736156362039296
+    m_Localized: Level completion reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736297789775872
+    m_Localized: Level mastery reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736456770674688
+    m_Localized: Level excellence reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9752004954939392
+    m_Localized: 'Credits: {Credits:SI()} / Experience: {Experience:SI()}'
+    m_Metadata:
+      m_Items:
+      - rid: 6471673996874350596
+  - m_Id: 11776705755602944
+    m_Localized: No data. Select or complete a level to view its statistics.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -173,3 +202,4 @@ MonoBehaviour:
         m_SharedEntries:
         - id: 229897134080
         - id: 2011257900097536
+        - id: 9752004954939392

@@ -1,5 +1,3 @@
-using System;
-
 using UnityEngine;
 
 namespace SpaceAce.Gameplay.Levels
@@ -8,58 +6,25 @@ namespace SpaceAce.Gameplay.Levels
                      menuName = "Space ace/Configs/Levels/Level reward collector config")]
     public sealed class LevelRewardCollectorConfig : ScriptableObject
     {
-        #region credits reward
+        public const float LevelMasteryThreshold = 0.33f;
+        public const float LevelExcellenceThreshold = 0.66f;
 
-        private const float MinFirstLevelCreditsReward = 0f;
-        private const float MaxFirstLevelCreditsReward = 1_000f;
+        [SerializeField]
+        private LevelRewardConfig _levelCompletionReward;
 
-        private const float MinNextLevelCreditsRewardIncrease = 0f;
-        private const float MaxNextLevelCreditsRewardIncrease = 1_000f;
+        [SerializeField]
+        private LevelRewardConfig _levelMasteryReward;
 
-        [SerializeField, Range(MinFirstLevelCreditsReward, MaxFirstLevelCreditsReward)]
-        private float _firstLevelCreditsReward = MinFirstLevelCreditsReward;
+        [SerializeField]
+        private LevelRewardConfig _levelExcellenceReward;
 
-        [SerializeField, Range(MinNextLevelCreditsRewardIncrease, MaxNextLevelCreditsRewardIncrease)]
-        private float _nextLevelCreditsRewardIncrease = MinNextLevelCreditsRewardIncrease;
-
-        public float GetCreditsReward(int level)
+        public LevelRewardBundle GetReward(int level, float creditsSupplement = 0f, float experienceSupplement = 0f)
         {
-            if (level <= 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            LevelReward completionReward = _levelCompletionReward.GetReward(level, creditsSupplement, experienceSupplement);
+            LevelReward masteryReward = _levelMasteryReward.GetReward(level, creditsSupplement, experienceSupplement);
+            LevelReward excellenceReward = _levelExcellenceReward.GetReward(level, creditsSupplement, experienceSupplement);
 
-            float reward = _firstLevelCreditsReward + _nextLevelCreditsRewardIncrease * (level - 1);
-            return reward;
+            return new(completionReward, masteryReward, excellenceReward);
         }
-
-        #endregion
-
-        #region experience reward
-
-        private const float MinFirstLevelExperienceReward = 0f;
-        private const float MaxFirstLevelExperienceReward = 10_000f;
-
-        private const float MinNextLevelExperienceRewardFactor = 1f;
-        private const float MaxNextLevelExperienceRewardFactor = 2f;
-
-        [SerializeField, Range(MinFirstLevelExperienceReward, MaxFirstLevelExperienceReward), Space]
-        private float _firstLevelExperienceReward = MinFirstLevelExperienceReward;
-
-        [SerializeField, Range(MinNextLevelExperienceRewardFactor, MaxNextLevelExperienceRewardFactor)]
-        private float _nextLevelExperienceRewardFactor = MinNextLevelExperienceRewardFactor;
-
-        public float GetExperienceReward(int level)
-        {
-            if (level <= 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            float reward = _firstLevelExperienceReward * Mathf.Pow(_nextLevelExperienceRewardFactor, level - 1);
-            return reward;
-        }
-
-        #endregion
     }
 }
