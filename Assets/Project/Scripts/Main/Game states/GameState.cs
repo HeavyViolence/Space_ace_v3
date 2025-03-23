@@ -4,7 +4,7 @@ namespace SpaceAce.Main.GameStates
     {
         MainMenu,
         MainMenuLoading,
-        Level,
-        LevelLoading
+        Battle,
+        BattleLoading
     }
 }

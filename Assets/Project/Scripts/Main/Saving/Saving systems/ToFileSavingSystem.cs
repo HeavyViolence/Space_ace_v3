@@ -1,7 +1,8 @@
-using SpaceAce.Auxiliary;
+using MessagePack;
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using UnityEngine;
 
@@ -9,54 +10,32 @@ namespace SpaceAce.Main.Saving
 {
     public sealed class ToFileSavingSystem : SavingSystem
     {
+        private const string SaveFileName = "Space ace";
         private const string SaveFileExtension = ".save";
 
-        public ToFileSavingSystem(IKeyGenerator keyGenerator, Encryptor encryptor) :
+        protected override string SavePath =>
+            Path.Combine(Application.persistentDataPath, SaveFileName + SaveFileExtension);
+
+        public ToFileSavingSystem(KeyGenerator keyGenerator, Encryptor encryptor) :
             base(keyGenerator, encryptor) { }
 
-        protected override string GetSavedDataPath(string savedDataName) =>
-            Path.Combine(Application.persistentDataPath, savedDataName + SaveFileExtension);
-
-        protected override void Save(ISavable entity)
+        protected override void Save(IEnumerable<KeyValuePair<int, byte[]>> states)
         {
-            string state = entity.GetState();
-
-            byte[] data = UTF8.GetBytes(state);
-            byte[] key = KeyGenerator.GenerateKey(entity.SavedDataName);
-            byte[] iv = KeyGenerator.GenerateIV();
-
-            byte[] encryptedData = Encryptor.Encrypt(data, key, iv);
-
-            List<byte> savableData = new(data.Length + iv.Length);
-            savableData.AddRange(encryptedData);
-            savableData.AddRange(iv);
-
-            string path = GetSavedDataPath(entity.SavedDataName);
-            File.WriteAllBytes(path, savableData.ToArray());
-
-            MyMath.ResetMany(data, key, iv);
+            byte[] data = MessagePackSerializer.Serialize(states);
+            File.WriteAllBytes(SavePath, data);
         }
 
-        protected override bool TryLoad(ISavable entity)
+        protected override bool TryLoad(out IEnumerable<KeyValuePair<int, byte[]>> states)
         {
-            string path = GetSavedDataPath(entity.SavedDataName);
-
-            if (File.Exists(path) == true)
+            if (File.Exists(SavePath) == true)
             {
-                byte[] loadedData = File.ReadAllBytes(path);
+                byte[] data = File.ReadAllBytes(SavePath);
 
-                byte[] encryptedData = loadedData[..^KeyGenerator.IVSize];
-                byte[] key = KeyGenerator.GenerateKey(entity.SavedDataName);
-                byte[] iv = loadedData[^KeyGenerator.IVSize..];
-
-                byte[] decryptedData = Encryptor.Decrypt(encryptedData, key, iv);
-                string state = UTF8.GetString(decryptedData);
-                entity.SetState(state);
-
-                MyMath.ResetMany(decryptedData, key, iv);
+                states = MessagePackSerializer.Deserialize<IEnumerable<KeyValuePair<int, byte[]>>>(data);
                 return true;
             }
-            
+
+            states = Enumerable.Empty<KeyValuePair<int, byte[]>>();
             return false;
         }
     }

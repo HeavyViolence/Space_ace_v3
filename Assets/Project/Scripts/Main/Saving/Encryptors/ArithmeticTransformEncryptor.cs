@@ -7,7 +7,7 @@ namespace SpaceAce.Main.Saving
 {
     public sealed class ArithmeticTransformEncryptor : Encryptor
     {
-        public ArithmeticTransformEncryptor(IKeyValidator validator) : base(validator) { }
+        public ArithmeticTransformEncryptor(KeyValidator validator) : base(validator) { }
 
         public override byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
         {

@@ -8,39 +8,25 @@ using UnityEngine;
 namespace SpaceAce.Main.SpaceBackgrounds
 {
     [CreateAssetMenu(fileName = "Space background config",
-                     menuName = "Space ace/Configs/Main/Space background config")]
+                     menuName = "Space Ace/Main/Space background config")]
     public sealed class SpaceBackgroundConfig : ScriptableObject
     {
-        #region main menu backgrounds
+        [SerializeField]
+        private FloatValueConfig _mainMenuScrollSpeed;
+
+        public FloatValueConfig MainMenuScrollSpeed =>
+            _mainMenuScrollSpeed;
 
         [SerializeField]
-        private FloatValueConfig _mainMenuBackgroundScrollSpeed;
+        private FloatValueConfig _levelScrollSpeed;
 
-        public FloatValueConfig MainMenuBackgroundScrollSpeed =>
-            _mainMenuBackgroundScrollSpeed;
-
-        [SerializeField]
-        private List<Material> _mainMenuBackgrounds;
-
-        public Material GetRandomMainMenuBackground() =>
-            MyMath.GetRandom(_mainMenuBackgrounds);
-
-        #endregion
-
-        #region space backgrounds
-
-        [SerializeField, Space]
-        private FloatValueConfig _spaceBackgroundScrollSpeed;
-
-        public FloatValueConfig SpaceBackgroundScrollSpeed =>
-            _spaceBackgroundScrollSpeed;
+        public FloatValueConfig LevelScrollSpeed =>
+            _levelScrollSpeed;
 
         [SerializeField]
         private List<Material> _spaceBackgrounds;
 
-        public Material GetRandomSpaceBackground() =>
+        public Material GetRandomBackground() =>
             MyMath.GetRandom(_spaceBackgrounds);
-
-        #endregion
     }
 }

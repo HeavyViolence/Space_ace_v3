@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.GamePause
 {

@@ -98,7 +98,7 @@ namespace SpaceAce.Auxiliary.SafeValues
             other is not null && Get().Equals(other.Get()) == true;
 
         public override int GetHashCode() =>
-            _value.GetHashCode() ^ _iv.GetHashCode();
+            HashCode.Combine(_value, _iv);
 
         public int CompareTo(SafeBool other)
         {

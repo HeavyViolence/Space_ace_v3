@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SpaceAce.Auxiliary.Configs
 {
     [CreateAssetMenu(fileName = "Curve config",
-                     menuName = "Space ace/Configs/Value configs/Curve config")]
+                     menuName = "Space Ace/Value configs/Curve config")]
     public sealed class CurveConfig : ScriptableObject
     {
         [SerializeField]

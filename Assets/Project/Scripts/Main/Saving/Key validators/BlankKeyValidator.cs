@@ -1,8 +1,8 @@
 namespace SpaceAce.Main.Saving
 {
-    public sealed class BlankKeyValidator : IKeyValidator
+    public sealed class BlankKeyValidator : KeyValidator
     {
-        public bool IsValidKey(byte[] key) => true;
-        public bool IsValidIV(byte[] iv) => true;
+        public override bool IsValidKey(byte[] key) => true;
+        public override bool IsValidIV(byte[] iv) => true;
     }
 }

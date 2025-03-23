@@ -2,6 +2,8 @@ using System;
 
 using UnityEngine;
 
+using VContainer;
+
 namespace SpaceAce.Main.MasterCamera
 {
     public sealed class MasterCameraHolder
@@ -21,6 +23,7 @@ namespace SpaceAce.Main.MasterCamera
         public float ViewportLowerBound => MasterCamera.ViewportToWorldPoint(Vector3.zero).y;
         public Vector3 ViewportLowerPosition => new(0f, ViewportLowerBound, 0f);
 
+        [Inject]
         public MasterCameraHolder(GameObject masterCameraPrefab)
         {
             GameObject cameraObject = masterCameraPrefab == null ? throw new ArgumentNullException()

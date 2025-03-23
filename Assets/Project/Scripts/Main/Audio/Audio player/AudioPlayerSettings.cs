@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SpaceAce.Main.Audio
 {
-    public sealed class AudioPlayerSettings
+    public sealed record AudioPlayerSettings
     {
         public const float MinVolume = -80f;
         public const float MaxVolume = 20f;

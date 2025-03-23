@@ -5,7 +5,6 @@ namespace SpaceAce.Main.Saving
         None,
         XOR,
         ArithmeticTransform,
-        PrimeTransform,
         AES
     }
 }

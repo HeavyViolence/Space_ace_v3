@@ -7,7 +7,7 @@ namespace SpaceAce.Main.Saving
 {
     public sealed class AESEncryptor : Encryptor
     {
-        public AESEncryptor(IKeyValidator validator) : base(validator) { }
+        public AESEncryptor(KeyValidator validator) : base(validator) { }
 
         public override byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
         {

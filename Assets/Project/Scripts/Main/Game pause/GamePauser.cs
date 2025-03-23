@@ -5,7 +5,7 @@ namespace SpaceAce.Main.GamePause
 {
     public sealed class GamePauser
     {
-        public event EventHandler GamePaused, GameResumed;
+        public event Action GamePaused, GameResumed;
 
         private readonly HashSet<IPausable> _pausableEntities = new();
 
@@ -55,7 +55,7 @@ namespace SpaceAce.Main.GamePause
             }
 
             Paused = true;
-            GamePaused?.Invoke(this, EventArgs.Empty);
+            GamePaused?.Invoke();
         }
 
         public void Resume()
@@ -67,11 +67,11 @@ namespace SpaceAce.Main.GamePause
 
             foreach (IPausable entity in _pausableEntities)
             {
-                return;
+                entity.Resume();
             }
 
             Paused = false;
-            GameResumed?.Invoke(this, EventArgs.Empty);
+            GameResumed?.Invoke();
         }
     }
 }

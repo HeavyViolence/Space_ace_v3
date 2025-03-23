@@ -1,88 +1,61 @@
 using Cysharp.Threading.Tasks;
 
-using Newtonsoft.Json;
+using MessagePack;
 
-using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.Saving;
 
 using System;
 
-using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 namespace SpaceAce.Main.Localization
 {
     public sealed class Localizer : IInitializable, IDisposable, ISavable
     {
-        public event EventHandler LanguageChanged, SavingRequested;
-        public event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
+        public event Action LanguageChanged, StateChanged;
 
         private readonly SavingSystem _savingSystem;
-        private readonly LocalizedFont _regularFont;
 
         private bool _initialized = false;
 
-        public Language SelectedLanguage { get; private set; } = LocalizationTools.DefaultLanguage;
-        public string SavedDataName => "Localization settings";
+        public Language SelectedLanguage { get; private set; } = Language.None;
+        public string StateName => "Localization settings";
 
-        public Localizer(LocalizerConfig config, SavingSystem savingSystem)
+        [Inject]
+        public Localizer(SavingSystem savingSystem)
         {
-            if (config == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            SelectedLanguage = config.InitialLanguage;
-            _regularFont = config.RegularFont ?? throw new ArgumentNullException();
             _savingSystem = savingSystem ?? throw new ArgumentNullException();
         }
 
-        public async UniTask SetLanguageAsync(Language language)
+        public void SetLanguage(Language language)
         {
-            if (_initialized == true && language == SelectedLanguage)
+            if (language == SelectedLanguage || language == Language.None)
             {
                 return;
             }
 
-            if (_initialized == false)
-            {
-                var operation = LocalizationSettings.InitializationOperation;
-                await UniTask.WaitUntil(() => operation.IsDone == true);
-            }
+            SetLanguageInternally(language);
+        }
 
-            Language previouslySelectedLanguage = SelectedLanguage;
-            string selectedLanguageCode = LocalizationTools.GetLanguageCode(language);
+        private void SetLanguageInternally(Language language)
+        {
+            string selectionCode = LocalizationTools.GetLanguageCode(language);
 
             foreach (Locale locale in LocalizationSettings.AvailableLocales.Locales)
             {
-                if (locale.Identifier.Code == selectedLanguageCode)
+                if (locale.Identifier.Code == selectionCode)
                 {
                     LocalizationSettings.SelectedLocale = locale;
                     SelectedLanguage = language;
+
+                    StateChanged?.Invoke();
+                    LanguageChanged?.Invoke();
                 }
             }
-
-            if (previouslySelectedLanguage != language)
-            {
-                SavingRequested?.Invoke(this, EventArgs.Empty);
-                LanguageChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            if (_initialized == false)
-            {
-                _initialized = true;
-            }
-        }
-
-        public async UniTask<Font> GetLocalizedRegularFontAsync()
-        {
-            var operation = _regularFont.LoadAssetAsync();
-            await UniTask.WaitUntil(() => operation.IsDone == true);
-
-            return operation.Result;
         }
 
         public async UniTask<string> GetLocalizedStringAsync(string tableName, string entryName, params object[] args)
@@ -97,6 +70,8 @@ namespace SpaceAce.Main.Localization
                 throw new ArgumentNullException();
             }
 
+            await EnsureLocalizationStartupAsync();
+
             LocalizedString localizedString = new(tableName, entryName) { Arguments = args };
 
             var operation = localizedString.GetLocalizedStringAsync();
@@ -105,47 +80,47 @@ namespace SpaceAce.Main.Localization
             return operation.Result;
         }
 
+        private async UniTask EnsureLocalizationStartupAsync()
+        {
+            if (_initialized == false)
+            {
+                var initialization = LocalizationSettings.InitializationOperation;
+                await UniTask.WaitUntil(() => initialization.IsDone == true);
+
+                Language startupLanguage = LocalizationTools.ValidateLanguage(SelectedLanguage);
+                SetLanguageInternally(startupLanguage);
+
+                _initialized = true;
+            }
+        }
+
         #region interfaces
 
         public void Initialize()
         {
             _savingSystem.Register(this);
-            SetLanguageAsync(Language.EnglishUnitedStates).Forget();
-
-            LocalizationSettings.SelectedLocaleChanged += (_) => LanguageChanged?.Invoke(this, EventArgs.Empty);
+            LocalizationSettings.SelectedLocaleChanged += (_) => LanguageChanged?.Invoke();
         }
 
         public void Dispose()
         {
             _savingSystem.Deregister(this);
-
-            LocalizationSettings.SelectedLocaleChanged -= (_) => LanguageChanged?.Invoke(this, EventArgs.Empty);
+            LocalizationSettings.SelectedLocaleChanged -= (_) => LanguageChanged?.Invoke();
         }
 
-        public string GetState() =>
-            JsonConvert.SerializeObject(SelectedLanguage, Formatting.Indented);
+        public byte[] GetState() => MessagePackSerializer.Serialize(SelectedLanguage);
 
-        public void SetState(string state)
+        public void SetState(byte[] state)
         {
             try
             {
-                Language language = JsonConvert.DeserializeObject<Language>(state);
-                SetLanguageAsync(language).Forget();
+                SelectedLanguage = MessagePackSerializer.Deserialize<Language>(state);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                SetLanguageAsync(LocalizationTools.DefaultLanguage).Forget();
-                ErrorOccurred?.Invoke(this, new ErrorOccurredEventArgs(ex));
+                SelectedLanguage = LocalizationTools.GetNativeLanguage();
             }
         }
-
-        public override bool Equals(object obj) =>
-            obj is not null && Equals(obj as ISavable);
-
-        public bool Equals(ISavable other) =>
-            other is not null && SavedDataName == other.SavedDataName;
-
-        public override int GetHashCode() => SavedDataName.GetHashCode();
 
         #endregion
     }

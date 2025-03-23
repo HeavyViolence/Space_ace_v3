@@ -1,14 +1,16 @@
-using Zenject;
+using SpaceAce.Main.DI;
+
+using VContainer;
 
 namespace SpaceAce.Main.MasterCamera
 {
-    public sealed class MasterAudioListenerHolderInstaller : MonoInstaller
+    public sealed class MasterAudioListenerHolderInstaller : ServiceInstaller
     {
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<MasterAudioListenerHolder>()
-                     .AsSingle()
-                     .NonLazy();
+            builder.Register<MasterAudioListenerHolder>(Lifetime.Singleton)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

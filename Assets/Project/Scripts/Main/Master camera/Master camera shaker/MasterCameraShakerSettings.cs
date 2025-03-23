@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SpaceAce.Main.MasterCamera
 {
     [Serializable]
-    public sealed class MasterCameraShakerSettings
+    public sealed record MasterCameraShakerSettings
     {
         public static MasterCameraShakerSettings Default => new(ShakeSettings.Default,
                                                                 ShakeSettings.Default,

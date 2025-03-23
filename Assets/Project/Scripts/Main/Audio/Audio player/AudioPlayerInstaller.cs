@@ -1,11 +1,13 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 using UnityEngine.Audio;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.Audio
 {
-    public sealed class AudioPlayerInstaller : MonoInstaller
+    public sealed class AudioPlayerInstaller : ServiceInstaller
     {
         [SerializeField, Range(AudioPlayer.MinAudioSources, AudioPlayer.MaxAudioSources)]
         private int _audioSources = AudioPlayer.MinAudioSources;
@@ -13,12 +15,13 @@ namespace SpaceAce.Main.Audio
         [SerializeField]
         private AudioMixer _mixer;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<AudioPlayer>()
-                     .AsSingle()
-                     .WithArguments(_audioSources, _mixer)
-                     .NonLazy();
+            builder.Register<AudioPlayer>(Lifetime.Singleton)
+                   .WithParameter(_audioSources)
+                   .WithParameter(_mixer)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

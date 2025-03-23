@@ -1,9 +1,8 @@
 using Cysharp.Threading.Tasks;
 
-using Newtonsoft.Json;
+using MessagePack;
 
 using SpaceAce.Auxiliary.Easing;
-using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.GamePause;
 using SpaceAce.Main.Saving;
 
@@ -14,7 +13,8 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Audio;
 
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 namespace SpaceAce.Main.Audio
 {
@@ -23,8 +23,7 @@ namespace SpaceAce.Main.Audio
         public const int MinAudioSources = 16;
         public const int MaxAudioSources = 256;
 
-        public event EventHandler SavingRequested;
-        public event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
+        public event Action StateChanged;
 
         private readonly AudioMixer _audioMixer;
         private readonly SavingSystem _savingSystem;
@@ -36,7 +35,7 @@ namespace SpaceAce.Main.Audio
         private readonly Stack<AudioSourceCache> _availableAudioSources;
 
         public int AudioSources { get; }
-        public string SavedDataName => "Audio settings";
+        public string StateName => "Audio settings";
 
         private AudioPlayerSettings _settings = AudioPlayerSettings.Default;
 
@@ -58,14 +57,15 @@ namespace SpaceAce.Main.Audio
                 _audioMixer.SetFloat("Explosions volumeFactor", value.ExplosionsVolume);
                 _audioMixer.SetFloat("Background volumeFactor", value.BackgroundVolume);
                 _audioMixer.SetFloat("Interface volumeFactor", value.InterfaceVolume);
-                _audioMixer.SetFloat("Music volumeFactor", value.MusicVolume);
+                _audioMixer.SetFloat("MusicPlayerConfig volumeFactor", value.MusicVolume);
                 _audioMixer.SetFloat("Interactions volumeFactor", value.InteractionsVolume);
                 _audioMixer.SetFloat("Notifications volumeFactor", value.NotificationsVolume);
 
-                SavingRequested?.Invoke(this, EventArgs.Empty);
+                StateChanged?.Invoke();
             }
         }
 
+        [Inject]
         public AudioPlayer(int audioSources,
                            AudioMixer mixer,
                            SavingSystem savingSystem,
@@ -153,7 +153,7 @@ namespace SpaceAce.Main.Audio
                 audioSourceHolder.transform.parent = _audioSourcesAnchor;
 
                 var audioSource = audioSourceHolder.AddComponent<AudioSource>();
-                AudioSourceCache cache = new(audioSource, audioSourceHolder.transform);
+                AudioSourceCache cache = new(audioSource, audioSourceHolder.transform, AudioPriority.Lowest);
 
                 ResetAudioSourceCache(cache);
                 _availableAudioSources.Push(cache);
@@ -182,7 +182,7 @@ namespace SpaceAce.Main.Audio
                 return _availableAudioSources.Pop();
             }
 
-            byte priority = 0;
+            AudioPriority priority = AudioPriority.Default;
             Guid id = Guid.Empty;
             AudioSourceCache availableSource = null;
 
@@ -193,9 +193,9 @@ namespace SpaceAce.Main.Audio
                     continue;
                 }
 
-                if (entry.Value.AudioSource.priority > priority)
+                if (entry.Value.Priority <= priority)
                 {
-                    priority = (byte)entry.Value.AudioSource.priority;
+                    priority = entry.Value.Priority;
                     id = entry.Key;
                     availableSource = entry.Value;
                 }
@@ -229,7 +229,6 @@ namespace SpaceAce.Main.Audio
             cache.AudioSource.bypassReverbZones = true;
             cache.AudioSource.playOnAwake = false;
             cache.AudioSource.loop = false;
-            cache.AudioSource.priority = byte.MaxValue;
             cache.AudioSource.volume = 0f;
             cache.AudioSource.spatialBlend = 0f;
             cache.AudioSource.pitch = 1f;
@@ -238,6 +237,8 @@ namespace SpaceAce.Main.Audio
             cache.Transform.parent = _audioSourcesAnchor.transform;
             cache.Transform.position = Vector3.zero;
             cache.Transform.gameObject.SetActive(false);
+
+            cache.Priority = AudioPriority.Lowest;
         }
 
         private AudioAccess ConfigureAudioSourceCache(AudioSourceCache cache,
@@ -255,7 +256,6 @@ namespace SpaceAce.Main.Audio
             cache.AudioSource.bypassEffects = false;
             cache.AudioSource.bypassListenerEffects = false;
             cache.AudioSource.bypassReverbZones = false;
-            cache.AudioSource.priority = (int)properties.Priority;
             cache.AudioSource.volume = properties.Volume;
             cache.AudioSource.spatialBlend = properties.SpatialBlend;
             cache.AudioSource.pitch = properties.Pitch;
@@ -278,6 +278,9 @@ namespace SpaceAce.Main.Audio
 
             cache.Transform.localPosition = position;
             cache.Transform.gameObject.SetActive(true);
+
+            cache.Priority = properties.Priority;
+
             cache.AudioSource.Play();
 
             _activeAudioSources.Add(id, cache);
@@ -297,29 +300,19 @@ namespace SpaceAce.Main.Audio
             _savingSystem.Deregister(this);
         }
 
-        public string GetState() =>
-            JsonConvert.SerializeObject(Settings, Formatting.Indented);
+        public byte[] GetState() => MessagePackSerializer.Serialize(Settings);
 
-        public void SetState(string state)
+        public void SetState(byte[] state)
         {
             try
             {
-                _settings = JsonConvert.DeserializeObject<AudioPlayerSettings>(state);
+                _settings = MessagePackSerializer.Deserialize<AudioPlayerSettings>(state);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _settings = AudioPlayerSettings.Default;
-                ErrorOccurred?.Invoke(this, new(ex));
             }
         }
-
-        public override bool Equals(object obj) =>
-            obj is not null && Equals(obj as ISavable);
-
-        public bool Equals(ISavable other) =>
-            other is not null && SavedDataName == other.SavedDataName;
-
-        public override int GetHashCode() => SavedDataName.GetHashCode();
 
         #endregion
     }

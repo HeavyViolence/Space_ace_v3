@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SpaceAce.Auxiliary.Configs
 {
     [CreateAssetMenu(fileName = "Float value config",
-                     menuName = "Space ace/Configs/Value configs/Float value config")]
+                     menuName = "Space Ace/Value configs/Float value config")]
     public sealed class FloatValueConfig : ScriptableObject
     {
         private const float MinValue = 0f;

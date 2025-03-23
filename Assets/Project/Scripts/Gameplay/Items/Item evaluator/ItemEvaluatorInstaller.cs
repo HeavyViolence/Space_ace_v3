@@ -1,20 +1,22 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Gameplay.Items
 {
-    public sealed class ItemEvaluatorInstaller : MonoInstaller
+    public sealed class ItemEvaluatorInstaller : ServiceInstaller
     {
         [SerializeField]
         private ItemEvaluatorConfig _config;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<ItemEvaluator>()
-                     .AsSingle()
-                     .WithArguments(_config)
-                     .NonLazy();
+            builder.Register<ItemEvaluator>(Lifetime.Singleton)
+                   .WithParameter(_config)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

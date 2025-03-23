@@ -18,36 +18,32 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 69733441536
-    m_Localized: Play
+  - m_Id: 11126431744
+    m_Localized: play
     m_Metadata:
       m_Items: []
-  - m_Id: 176012910592
-    m_Localized: Inventory
+  - m_Id: 332556918784
+    m_Localized: inventory
     m_Metadata:
       m_Items: []
-  - m_Id: 329444745216
-    m_Localized: Armory
+  - m_Id: 1214740684800
+    m_Localized: armory
     m_Metadata:
       m_Items: []
-  - m_Id: 391054876672
-    m_Localized: Settings
+  - m_Id: 1403073323008
+    m_Localized: settings
     m_Metadata:
       m_Items: []
-  - m_Id: 483832881152
-    m_Localized: Commands
+  - m_Id: 1657554329600
+    m_Localized: statistics
     m_Metadata:
       m_Items: []
-  - m_Id: 534076448768
-    m_Localized: Info
+  - m_Id: 2319767822336
+    m_Localized: cheats
     m_Metadata:
       m_Items: []
-  - m_Id: 2223156224000
-    m_Localized: Statistics
-    m_Metadata:
-      m_Items: []
-  - m_Id: 323670642778112
-    m_Localized: Saves
+  - m_Id: 15947159160479744
+    m_Localized: authorization
     m_Metadata:
       m_Items: []
   references:

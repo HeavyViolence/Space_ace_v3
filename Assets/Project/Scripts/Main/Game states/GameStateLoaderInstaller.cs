@@ -1,14 +1,16 @@
-using Zenject;
+using SpaceAce.Main.DI;
+
+using VContainer;
 
 namespace SpaceAce.Main.GameStates
 {
-    public sealed class GameStateLoaderInstaller : MonoInstaller
+    public sealed class GameStateLoaderInstaller : ServiceInstaller
     {
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<GameStateLoader>()
-                     .AsSingle()
-                     .NonLazy();
+            builder.Register<GameStateLoader>(Lifetime.Singleton)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

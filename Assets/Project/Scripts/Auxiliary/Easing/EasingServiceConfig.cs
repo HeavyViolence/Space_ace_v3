@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SpaceAce.Auxiliary.Easing
 {
     [CreateAssetMenu(fileName = "Easing service config",
-                     menuName = "Space ace/Configs/Auxiliary/Easing service config")]
+                     menuName = "Space Ace/Auxiliary/Easing service config")]
     public sealed class EasingServiceConfig : ScriptableObject
     {
         [SerializeField]

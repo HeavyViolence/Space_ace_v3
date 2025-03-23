@@ -1,20 +1,16 @@
-using UnityEngine;
+using SpaceAce.Main.DI;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.Localization
 {
-    public sealed class LocalizerInstaller : MonoInstaller
+    public sealed class LocalizerInstaller : ServiceInstaller
     {
-        [SerializeField]
-        private LocalizerConfig _config;
-
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<Localizer>()
-                     .AsSingle()
-                     .WithArguments(_config)
-                     .NonLazy();
+            builder.Register<Localizer>(Lifetime.Singleton)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

@@ -13,24 +13,10 @@ MonoBehaviour:
   m_Name: Localization-Assets-Shared
   m_EditorClassIdentifier: 
   m_GroupName: Localization-Assets-Shared
-  m_Data:
-    m_SerializedData: []
   m_GUID: a4f7a96ed0f721f45b7e38e6dad3ad21
   m_SerializeEntries:
-  - m_GUID: 1253135ced965594d8dc0a761a39ec3d
-    m_Address: Assets/Project/Prefabs/Main/Localization/Localized fonts Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41a2407fa04287146971594db3647c92
-    m_Address: Assets/Project/Prefabs/Main/Localization/UI localization/Main menu
-      Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: caf59f499582c0b499d9c984a666ee59
-    m_Address: Assets/Project/Localization/UI/Level selection menu/Level selection
-      menu Shared Data.asset
+    m_Address: Assets/Project/Localization/UI/Main menu/Main menu Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

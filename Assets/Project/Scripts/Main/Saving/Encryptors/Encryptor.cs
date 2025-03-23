@@ -4,9 +4,9 @@ namespace SpaceAce.Main.Saving
 {
     public abstract class Encryptor
     {
-        protected readonly IKeyValidator KeyValidator;
+        protected readonly KeyValidator KeyValidator;
 
-        public Encryptor(IKeyValidator validator)
+        public Encryptor(KeyValidator validator)
         {
             KeyValidator = validator ?? throw new ArgumentNullException();
         }

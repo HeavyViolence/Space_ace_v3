@@ -4,7 +4,7 @@ using System;
 
 namespace SpaceAce.Main.Saving
 {
-    public sealed class HashKeyValidator : IKeyValidator
+    public sealed class HashKeyValidator : KeyValidator
     {
         private const int ValidKeySize = 32;
         private const float MinKeyRandomness = 0.5f;
@@ -12,7 +12,7 @@ namespace SpaceAce.Main.Saving
         private const int ValidIVSize = 32;
         private const float MinIVRandomness = 0.5f;
 
-        public bool IsValidKey(byte[] key)
+        public override bool IsValidKey(byte[] key)
         {
             if (key is null)
             {
@@ -32,7 +32,7 @@ namespace SpaceAce.Main.Saving
             return true;
         }
 
-        public bool IsValidIV(byte[] iv)
+        public override bool IsValidIV(byte[] iv)
         {
             if (iv is null)
             {

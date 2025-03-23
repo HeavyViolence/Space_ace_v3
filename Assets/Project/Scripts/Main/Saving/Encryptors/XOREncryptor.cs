@@ -7,7 +7,7 @@ namespace SpaceAce.Main.Saving
 {
     public sealed class XOREncryptor : Encryptor
     {
-        public XOREncryptor(IKeyValidator validator) : base(validator) { }
+        public XOREncryptor(KeyValidator validator) : base(validator) { }
 
         public override byte[] Encrypt(byte[] data, byte[] key, byte[] iv)
         {

@@ -11,14 +11,13 @@ namespace SpaceAce.Main.GameStates
         public const float MinLoadDelay = 0f;
         public const float MaxLoadDelay = 10f;
 
-        public event EventHandler<MainMenuLoadingStartedEventArgs> MainMenuLoadingStarted;
-        public event EventHandler MainMenuLoaded;
+        public event Action<MainMenuLoadingStartedArgs> MainMenuLoadingStarted;
+        public event Action MainMenuLoaded;
 
-        public event EventHandler<LevelLoadingStartedEventArgs> LevelLoadingStarted;
-        public event EventHandler<LevelLoadedEventArgs> LevelLoaded;
+        public event Action<BattleStateLoadingStartedArgs> BattleStateLoadingStarted;
+        public event Action<BattleDifficulty> BattleStateLoaded;
 
         public GameState CurrentState { get; private set; } = GameState.MainMenu;
-        public int LoadedLevel { get; private set; } = 0;
 
         public async UniTask LoadMainMenuAsync(float delay)
         {
@@ -28,40 +27,34 @@ namespace SpaceAce.Main.GameStates
                 return;
             }
 
-            float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
-
             CurrentState = GameState.MainMenuLoading;
-            MainMenuLoadingStarted?.Invoke(this, new(clampedDelay));
+
+            float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
+            MainMenuLoadingStarted?.Invoke(new(clampedDelay));
 
             await UniTask.WaitForSeconds(clampedDelay);
 
             CurrentState = GameState.MainMenu;
-            LoadedLevel = 0;
-            MainMenuLoaded?.Invoke(this, EventArgs.Empty);
+            MainMenuLoaded?.Invoke();
         }
 
-        public async UniTask LoadLevelAsync(int level, float delay)
+        public async UniTask LoadBattleAsync(BattleDifficulty difficulty, float delay)
         {
-            if (level < 1)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            if (LoadedLevel == level)
+            if (CurrentState == GameState.Battle ||
+                CurrentState == GameState.BattleLoading)
             {
                 return;
             }
 
-            float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
+            CurrentState = GameState.BattleLoading;
 
-            CurrentState = GameState.LevelLoading;
-            LevelLoadingStarted?.Invoke(this, new(level, clampedDelay));
+            float clampedDelay = Mathf.Clamp(delay, MinLoadDelay, MaxLoadDelay);
+            BattleStateLoadingStarted?.Invoke(new(difficulty, clampedDelay));
 
             await UniTask.WaitForSeconds(clampedDelay);
 
-            CurrentState = GameState.Level;
-            LoadedLevel = level;
-            LevelLoaded?.Invoke(this, new(level));
+            CurrentState = GameState.Battle;
+            BattleStateLoaded?.Invoke(difficulty);
         }
     }
 }

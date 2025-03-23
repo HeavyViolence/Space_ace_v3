@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SpaceAce.Auxiliary.Configs
 {
     [CreateAssetMenu(fileName = "Int value config",
-                     menuName = "Space ace/Configs/Value configs/Int value config")]
+                     menuName = "Space Ace/Value configs/Int value config")]
     public sealed class IntValueConfig : ScriptableObject
     {
         private const int MinValue = 0;

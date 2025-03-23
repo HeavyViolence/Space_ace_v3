@@ -13,7 +13,7 @@ using UnityEngine.Audio;
 namespace SpaceAce.Main.Audio
 {
     [CreateAssetMenu(fileName = "Audio collection",
-                     menuName = "Space ace/Configs/Audio/Audio collection")]
+                     menuName = "Space Ace/Audio/Audio collection")]
     public sealed class AudioCollection : ScriptableObject
     {
         public const float MinVolume = 0f;
@@ -125,6 +125,7 @@ namespace SpaceAce.Main.Audio
         }
 
         #region audio preview
+        #if UNITY_EDITOR
 
         private readonly HashSet<GameObject> _previews = new();
 
@@ -176,6 +177,7 @@ namespace SpaceAce.Main.Audio
             _previews.Clear();
         }
 
+        #endif
         #endregion
     }
 }

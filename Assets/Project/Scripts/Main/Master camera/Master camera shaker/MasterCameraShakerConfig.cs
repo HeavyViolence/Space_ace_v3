@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SpaceAce.Main.MasterCamera
 {
     [CreateAssetMenu(fileName = "Master camera shaker config",
-                     menuName = "Space ace/Configs/Main/Master camera shaker config")]
+                     menuName = "Space Ace/Main/Master camera shaker config")]
     public sealed class MasterCameraShakerConfig : ScriptableObject
     {
         [SerializeField]

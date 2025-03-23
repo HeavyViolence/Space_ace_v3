@@ -1,7 +1,6 @@
-using Newtonsoft.Json;
+using MessagePack;
 
 using SpaceAce.Auxiliary;
-using SpaceAce.Auxiliary.EventArguments;
 using SpaceAce.Main.GamePause;
 using SpaceAce.Main.Saving;
 
@@ -10,14 +9,14 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 namespace SpaceAce.Main.MasterCamera
 {
     public sealed class MasterCameraShaker : IInitializable, IDisposable, ISavable, IFixedTickable
     {
-        public event EventHandler SavingRequested;
-        public event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
+        public event Action StateChanged;
 
         private readonly HashSet<ShakeRequest> _shakeRequests = new();
         private readonly HashSet<ShakeRequest> _shakeRequestsToBeDeleted = new();
@@ -44,12 +43,13 @@ namespace SpaceAce.Main.MasterCamera
                 }
 
                 _settings = value;
-                SavingRequested?.Invoke(this, EventArgs.Empty);
+                StateChanged?.Invoke();
             }
         }
 
-        public string SavedDataName => "Camera shake settings";
+        public string StateName => "Camera shake settings";
 
+        [Inject]
         public MasterCameraShaker(MasterCameraShakerConfig config,
                                   MasterCameraHolder masterCameraHolder,
                                   GamePauser gamePauser,
@@ -151,31 +151,19 @@ namespace SpaceAce.Main.MasterCamera
             _savingSystem.Deregister(this);
         }
 
-        public string GetState() => JsonConvert.SerializeObject(Settings, Formatting.Indented);
+        public byte[] GetState() => MessagePackSerializer.Serialize(Settings);
 
-        public void SetState(string state)
+        public void SetState(byte[] state)
         {
-            MasterCameraShakerSettings initialSettings = _settings;
-
             try
             {
-                _settings = JsonConvert.DeserializeObject<MasterCameraShakerSettings>(state);
+                _settings = MessagePackSerializer.Deserialize<MasterCameraShakerSettings>(state);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _settings = initialSettings;
-                ErrorOccurred?.Invoke(this, new(ex));
+                _settings = MasterCameraShakerSettings.Default;
             }
         }
-
-        public override bool Equals(object obj) =>
-            obj is not null && Equals(obj as ISavable);
-
-        public bool Equals(ISavable other) =>
-            other is not null && SavedDataName == other.SavedDataName;
-
-        public override int GetHashCode() =>
-            SavedDataName.GetHashCode();
 
         public void FixedTick()
         {

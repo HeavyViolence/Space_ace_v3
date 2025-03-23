@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SpaceAce.Main.MasterCamera
 {
     [Serializable]
-    public sealed class ShakeSettings
+    public sealed record ShakeSettings
     {
         public const float MinAmplitude = 0.01f;
         public const float MaxAmplitude = 1f;

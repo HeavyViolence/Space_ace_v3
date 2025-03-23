@@ -1,10 +1,12 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.SpaceBackgrounds
 {
-    public sealed class SpaceBackgroundInstaller : MonoInstaller
+    public sealed class SpaceBackgroundInstaller : ServiceInstaller
     {
         [SerializeField]
         private GameObject _spaceBackgroundPrefab;
@@ -12,12 +14,13 @@ namespace SpaceAce.Main.SpaceBackgrounds
         [SerializeField]
         private SpaceBackgroundConfig _config;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<SpaceBackground>()
-                     .AsSingle()
-                     .WithArguments(_spaceBackgroundPrefab, _config)
-                     .NonLazy();
+            builder.Register<SpaceBackground>(Lifetime.Singleton)
+                   .WithParameter(_spaceBackgroundPrefab)
+                   .WithParameter(_config)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

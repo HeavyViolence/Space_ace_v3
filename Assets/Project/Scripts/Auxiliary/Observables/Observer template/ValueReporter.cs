@@ -1,14 +1,12 @@
-using SpaceAce.Auxiliary.EventArguments;
-
 using System;
 
 namespace SpaceAce.Auxiliary.Observables
 {
     public sealed class ValueReporter<T> : IObserver<T>
     {
-        public event EventHandler<ValueChangedEventArgs<T>> ValueChanged;
-        public event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
-        public event EventHandler ReportsCompleted;
+        public event Action<T> ValueChanged;
+        public event Action<Exception> ErrorOccurred;
+        public event Action ReportsCompleted;
 
         private IDisposable _disposer;
 
@@ -22,15 +20,15 @@ namespace SpaceAce.Auxiliary.Observables
             _disposer?.Dispose();
 
         public void OnNext(T value) =>
-            ValueChanged?.Invoke(this, new(value));
+            ValueChanged?.Invoke(value);
 
         public void OnError(Exception error) =>
-            ErrorOccurred?.Invoke(this, new(error));
+            ErrorOccurred?.Invoke(error);
 
         public void OnCompleted()
         {
             Unsubscribe();
-            ReportsCompleted?.Invoke(this, EventArgs.Empty);
+            ReportsCompleted?.Invoke();
         }
     }
 }

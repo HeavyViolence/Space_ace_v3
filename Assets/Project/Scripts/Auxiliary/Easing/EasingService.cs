@@ -2,12 +2,15 @@ using System;
 
 using UnityEngine;
 
+using VContainer;
+
 namespace SpaceAce.Auxiliary.Easing
 {
     public sealed class EasingService
     {
         private readonly EasingServiceConfig _config;
 
+        [Inject]
         public EasingService(EasingServiceConfig config)
         {
             _config = config == null ? throw new ArgumentNullException() : config;

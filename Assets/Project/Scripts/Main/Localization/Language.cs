@@ -2,7 +2,10 @@ namespace SpaceAce.Main.Localization
 {
     public enum Language
     {
-        EnglishUnitedStates,
-        Russian
+        English,
+        Russian,
+        Ukrainian,
+        Turkish,
+        None
     }
 }

@@ -1,17 +1,14 @@
-using SpaceAce.Auxiliary.EventArguments;
-
 using System;
 
 namespace SpaceAce.Main.Saving
 {
-    public interface ISavable : IEquatable<ISavable>
+    public interface ISavable
     {
-        event EventHandler SavingRequested;
-        event EventHandler<ErrorOccurredEventArgs> ErrorOccurred;
+        event Action StateChanged;
 
-        string SavedDataName { get; }
+        string StateName { get; }
 
-        string GetState();
-        void SetState(string state);
+        byte[] GetState();
+        void SetState(byte[] state);
     }
 }

@@ -9,26 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bf1b0285b70b9e48b736b7f07ff2df5, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a138bbafb0b28c48b53b832e9110bf3, type: 3}
   m_Name: Item evaluator config
   m_EditorClassIdentifier: 
   _probability: {fileID: 11400000, guid: 365152cfd265c6b4fba5d2e9980aaf26, type: 2}
-  _grade: {fileID: 11400000, guid: 0e809a63d87a96c44aee730783e3a647, type: 2}
-  _influence: {fileID: 11400000, guid: 3854344bbc46ca84c87165449c02e728, type: 2}
-  _gradeRange: {x: 0, y: 1400}
-  _gradeGap: 0.01
   _tierColorCodes:
   - serializedVersion: 2
     rgba: 4278215167
   - serializedVersion: 2
-    rgba: 4294901917
+    rgba: 4294926719
   - serializedVersion: 2
     rgba: 4284547327
   - serializedVersion: 2
-    rgba: 4278255615
+    rgba: 4278255578
   - serializedVersion: 2
-    rgba: 4294941952
+    rgba: 4294942012
   - serializedVersion: 2
     rgba: 4284612352
   - serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294967198

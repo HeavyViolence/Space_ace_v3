@@ -1,20 +1,22 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Auxiliary.Easing
 {
-    public sealed class EasingServiceInstaller : MonoInstaller
+    public sealed class EasingServiceInstaller : ServiceInstaller
     {
         [SerializeField]
         private EasingServiceConfig _config;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<EasingService>()
-                     .AsSingle()
-                     .WithArguments(_config)
-                     .NonLazy();
+            builder.Register<EasingService>(Lifetime.Singleton)
+                   .WithParameter(_config)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

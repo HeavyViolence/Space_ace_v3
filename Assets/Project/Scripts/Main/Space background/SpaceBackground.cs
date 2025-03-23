@@ -6,7 +6,8 @@ using System;
 
 using UnityEngine;
 
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 namespace SpaceAce.Main.SpaceBackgrounds
 {
@@ -16,10 +17,10 @@ namespace SpaceAce.Main.SpaceBackgrounds
         private readonly GamePauser _gamePauser;
         private readonly GameStateLoader _gameStateLoader;
         private readonly MeshRenderer _renderer;
-        private readonly ParticleSystem _spaceDust;
 
         public Vector2 ScrollVelocity { get; private set; } = Vector2.zero;
 
+        [Inject]
         public SpaceBackground(GameObject prefab,
                                SpaceBackgroundConfig config,
                                GamePauser gamePauser,
@@ -39,54 +40,39 @@ namespace SpaceAce.Main.SpaceBackgrounds
                 throw new MissingComponentException($"Space background prefab is missing {typeof(MeshRenderer)}!");
             }
 
-            _spaceDust = spaceBackground.GetComponentInChildren<ParticleSystem>();
-
-            if (_spaceDust == null)
-            {
-                throw new MissingComponentException($"Space background prefab is missing space dust {typeof(ParticleSystem)}!");
-            }
-
             SetMainMenuState();
         }
 
         public void SetMainMenuState()
         {
-            _renderer.sharedMaterial = _config.GetRandomMainMenuBackground();
-            _renderer.sharedMaterial.mainTextureOffset = new Vector2(0f, MyMath.RandomUnit);
+            _renderer.sharedMaterial = _config.GetRandomBackground();
+            _renderer.sharedMaterial.mainTextureOffset = MyMath.RandomUnit2D;
 
-            _spaceDust.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-
-            ScrollVelocity = new(0f, _config.MainMenuBackgroundScrollSpeed.Random);
+            ScrollVelocity = new(0f, _config.MainMenuScrollSpeed.Random);
         }
 
-        public void SetLevelState()
+        public void SetBattleState()
         {
-            _renderer.sharedMaterial = _config.GetRandomSpaceBackground();
-            _renderer.sharedMaterial.mainTextureOffset = new Vector2(0f, MyMath.RandomUnit);
+            _renderer.sharedMaterial = _config.GetRandomBackground();
+            _renderer.sharedMaterial.mainTextureOffset = MyMath.RandomUnit2D;
 
-            _spaceDust.Play(true);
-
-            ScrollVelocity = new(0f, _config.SpaceBackgroundScrollSpeed.Random);
+            ScrollVelocity = new(0f, _config.LevelScrollSpeed.Random);
         }
 
         #region interfaces
 
         public void Initialize()
         {
-            _gameStateLoader.MainMenuLoaded += MainMenuLoadedEventHandler;
-            _gameStateLoader.LevelLoaded += LevelLoadedEventHandler;
+            _gameStateLoader.MainMenuLoaded += OnMainMenuLoaded;
+            _gameStateLoader.BattleStateLoaded += OnBattleStateLoaded;
 
-            _gamePauser.GamePaused += GamePausedEventHandler;
-            _gamePauser.GameResumed += GameResumedEventHandler;
+            SetMainMenuState();
         }
 
         public void Dispose()
         {
-            _gameStateLoader.MainMenuLoaded -= MainMenuLoadedEventHandler;
-            _gameStateLoader.LevelLoaded -= LevelLoadedEventHandler;
-
-            _gamePauser.GamePaused -= GamePausedEventHandler;
-            _gamePauser.GameResumed -= GameResumedEventHandler;
+            _gameStateLoader.MainMenuLoaded -= OnMainMenuLoaded;
+            _gameStateLoader.BattleStateLoaded -= OnBattleStateLoaded;
         }
 
         public void Tick()
@@ -103,24 +89,14 @@ namespace SpaceAce.Main.SpaceBackgrounds
 
         #region event handlers
 
-        private void MainMenuLoadedEventHandler(object sender, EventArgs e)
+        private void OnMainMenuLoaded()
         {
             SetMainMenuState();
         }
 
-        private void LevelLoadedEventHandler(object sender, LevelLoadedEventArgs e)
+        private void OnBattleStateLoaded(BattleDifficulty difficulty)
         {
-            SetLevelState();
-        }
-
-        private void GamePausedEventHandler(object sender, EventArgs e)
-        {
-            _spaceDust.Pause(true);
-        }
-
-        private void GameResumedEventHandler(object sender, EventArgs e)
-        {
-            _spaceDust.Play(true);
+            SetBattleState();
         }
 
         #endregion

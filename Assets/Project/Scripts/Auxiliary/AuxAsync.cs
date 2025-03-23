@@ -9,8 +9,6 @@ namespace SpaceAce.Auxiliary
 {
     public static class AuxAsync
     {
-        #region conditional delays
-
         public static async UniTask DelayAsync(Func<float> delayProvider,
                                                Func<bool> pauseCondition,
                                                CancellationToken token = default)
@@ -149,6 +147,15 @@ namespace SpaceAce.Auxiliary
             }
         }
 
-        #endregion
+        public static async UniTaskVoid WaitForNextFrameThenDoAsync(Action action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            await UniTask.NextFrame();
+            action();
+        }
     }
 }

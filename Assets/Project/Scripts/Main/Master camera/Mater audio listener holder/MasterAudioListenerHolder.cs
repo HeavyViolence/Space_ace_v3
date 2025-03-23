@@ -4,7 +4,8 @@ using System;
 
 using UnityEngine;
 
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 namespace SpaceAce.Main.MasterCamera
 {
@@ -14,6 +15,7 @@ namespace SpaceAce.Main.MasterCamera
 
         public AudioListener MasterAudioListener { get; private set; }
 
+        [Inject]
         public MasterAudioListenerHolder(MasterCameraHolder masterCameraHolder,
                                          GameStateLoader gameStateLoader)
         {
@@ -34,19 +36,19 @@ namespace SpaceAce.Main.MasterCamera
 
         public void Initialize()
         {
-            _gameStateLoader.MainMenuLoaded += MainMenuLoadedEventHandler;
+            _gameStateLoader.MainMenuLoaded += OnMainMenuLoaded;
         }
 
         public void Dispose()
         {
-            _gameStateLoader.MainMenuLoaded -= MainMenuLoadedEventHandler;
+            _gameStateLoader.MainMenuLoaded -= OnMainMenuLoaded;
         }
 
         #endregion
 
         #region event handlers
 
-        private void MainMenuLoadedEventHandler(object sender, EventArgs e)
+        private void OnMainMenuLoaded()
         {
             MasterAudioListener.enabled = true;
         }

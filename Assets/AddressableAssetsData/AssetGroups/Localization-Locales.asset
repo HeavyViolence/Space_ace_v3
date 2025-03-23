@@ -13,12 +13,22 @@ MonoBehaviour:
   m_Name: Localization-Locales
   m_EditorClassIdentifier: 
   m_GroupName: Localization-Locales
-  m_Data:
-    m_SerializedData: []
   m_GUID: fbfedff6ffed661469c158641b1e8d81
   m_SerializeEntries:
   - m_GUID: 5b5b9934b20e94647a4c9eca46abd775
     m_Address: Russian (Russia) (ru-RU)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 787445fd739fff54b9fa951e40f41d97
+    m_Address: Turkish (Turkey) (tr-TR)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e71d30d751aef14cb435947184509a0
+    m_Address: Ukrainian (Ukraine) (uk-UA)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

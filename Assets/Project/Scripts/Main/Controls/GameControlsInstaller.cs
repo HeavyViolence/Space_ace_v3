@@ -1,14 +1,16 @@
-using Zenject;
+using SpaceAce.Main.DI;
+
+using VContainer;
 
 namespace SpaceAce.Main.Controls
 {
-    public sealed class GameControlsInstaller : MonoInstaller
+    public sealed class GameControlsInstaller : ServiceInstaller
     {
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<GameControls>()
-                     .AsSingle()
-                     .NonLazy();
+            builder.Register<GameControls>(Lifetime.Singleton)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

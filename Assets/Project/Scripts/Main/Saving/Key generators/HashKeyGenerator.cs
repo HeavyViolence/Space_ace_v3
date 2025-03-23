@@ -4,16 +4,16 @@ using System.Text;
 
 namespace SpaceAce.Main.Saving
 {
-    public sealed class HashKeyGenerator : IKeyGenerator
+    public sealed class HashKeyGenerator : KeyGenerator
     {
         private static readonly UTF8Encoding _utf8 = new(true, true);
         private static readonly SHA256 _sha256 = SHA256.Create();
         private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-        public int KeySize => 32;
-        public int IVSize => 32;
+        public override int KeySize => 32;
+        public override int IVSize => 32;
 
-        public byte[] GenerateKey(string seed)
+        public override byte[] GenerateKey(string seed)
         {
             if (string.IsNullOrEmpty(seed) == true ||
                 string.IsNullOrWhiteSpace(seed) == true)
@@ -27,7 +27,7 @@ namespace SpaceAce.Main.Saving
             return hash;
         }
 
-        public byte[] GenerateIV()
+        public override byte[] GenerateIV()
         {
             byte[] iv = new byte[IVSize];
             _rng.GetBytes(iv);

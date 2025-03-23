@@ -1,20 +1,22 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.MasterCamera
 {
-    public sealed class MasterCameraShakerInstaller : MonoInstaller
+    public sealed class MasterCameraShakerInstaller : ServiceInstaller
     {
         [SerializeField]
         private MasterCameraShakerConfig _config;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            Container.BindInterfacesAndSelfTo<MasterCameraShaker>()
-                     .AsSingle()
-                     .WithArguments(_config)
-                     .NonLazy();
+            builder.Register<MasterCameraShaker>(Lifetime.Singleton)
+                   .WithParameter(_config)
+                   .AsImplementedInterfaces()
+                   .AsSelf();
         }
     }
 }

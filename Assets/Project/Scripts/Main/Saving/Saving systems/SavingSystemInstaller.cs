@@ -1,10 +1,12 @@
+using SpaceAce.Main.DI;
+
 using UnityEngine;
 
-using Zenject;
+using VContainer;
 
 namespace SpaceAce.Main.Saving
 {
-    public sealed class SavingSystemInstaller : MonoInstaller
+    public sealed class SavingSystemInstaller : ServiceInstaller
     {
         [SerializeField]
         private SavingSystemType _savingSystemType;
@@ -12,59 +14,53 @@ namespace SpaceAce.Main.Saving
         [SerializeField]
         private EncryptionType _encryptionType;
 
-        public override void InstallBindings()
+        public override void Install(IContainerBuilder builder)
         {
-            IKeyGenerator keyGenerator = SelectKeyGenerator(_encryptionType);
-            IKeyValidator keyValidator = SelectKeyValidator(_encryptionType);
+            KeyGenerator keyGenerator = SelectKeyGenerator(_encryptionType);
+            KeyValidator keyValidator = SelectKeyValidator(_encryptionType);
             Encryptor encryptor = SelectEncryptor(_encryptionType, keyValidator);
             SavingSystem savingSystem = SelectSavingSystem(_savingSystemType, keyGenerator, encryptor);
 
-            Container.BindInterfacesAndSelfTo<SavingSystem>()
-                     .FromInstance(savingSystem)
-                     .AsSingle()
-                     .NonLazy();
+            builder.RegisterInstance(savingSystem).AsImplementedInterfaces().AsSelf();
         }
 
-        private IKeyGenerator SelectKeyGenerator(EncryptionType type)
+        private KeyGenerator SelectKeyGenerator(EncryptionType type)
         {
             return type switch
             {
                 EncryptionType.None => new BlankKeyGenerator(),
                 EncryptionType.XOR => new HashKeyGenerator(),
                 EncryptionType.ArithmeticTransform => new HashKeyGenerator(),
-                EncryptionType.PrimeTransform => new HashKeyGenerator(),
                 EncryptionType.AES => new AESKeyGenerator(),
                 _ => new BlankKeyGenerator()
             };
         }
 
-        private IKeyValidator SelectKeyValidator(EncryptionType type)
+        private KeyValidator SelectKeyValidator(EncryptionType type)
         {
             return type switch
             {
                 EncryptionType.None => new BlankKeyValidator(),
                 EncryptionType.XOR => new HashKeyValidator(),
                 EncryptionType.ArithmeticTransform => new HashKeyValidator(),
-                EncryptionType.PrimeTransform => new HashKeyValidator(),
                 EncryptionType.AES => new AESKeyValidator(),
                 _ => new BlankKeyValidator()
             };
         }
 
-        private Encryptor SelectEncryptor(EncryptionType type, IKeyValidator validator)
+        private Encryptor SelectEncryptor(EncryptionType type, KeyValidator validator)
         {
             return type switch
             {
                 EncryptionType.None => new BlankEncryptor(validator),
                 EncryptionType.XOR => new XOREncryptor(validator),
                 EncryptionType.ArithmeticTransform => new ArithmeticTransformEncryptor(validator),
-                EncryptionType.PrimeTransform => new PrimeTransformEncryptor(validator),
                 EncryptionType.AES => new AESEncryptor(validator),
                 _ => new BlankEncryptor(validator)
             };
         }
 
-        private SavingSystem SelectSavingSystem(SavingSystemType type, IKeyGenerator keyGenerator, Encryptor encryptor)
+        private SavingSystem SelectSavingSystem(SavingSystemType type, KeyGenerator keyGenerator, Encryptor encryptor)
         {
             return type switch
             {
